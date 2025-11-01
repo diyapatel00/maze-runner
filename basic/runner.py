@@ -36,6 +36,8 @@ def turn(runner: tuple[int, int, str], direction: str) -> tuple[int, int, str]:
             return runner
         else:
             runner[2] = right_orientation[runner[2]]
+            return runner
+
 
 def forward(runner: tuple[int, int, str]) -> tuple[int, int, str]:
     """
@@ -50,13 +52,15 @@ def forward(runner: tuple[int, int, str]) -> tuple[int, int, str]:
     else:
         runner[2] -= 1
 
+    return runner
+
 def sense_walls(runner, maze) -> tuple[bool, bool, bool]:
     """
         need to write function definition
     """
-    x = runner[0]
-    y = runner[1]
-    orientation = runner[2]
+    x = get_x(runner)
+    y = get_y(runner)
+    orientation = get_orientation(runner)
     left_wall, front_wall, right_wall = False
 
     if orientation == "N":
@@ -88,12 +92,15 @@ def sense_walls(runner, maze) -> tuple[bool, bool, bool]:
         if maze[x][y+1] == "#":
             right_wall = True
     return (left_wall, front_wall, right_wall)
-
+ 
 def go_straight(runner, maze):
     """
         need to write function definition
     """
-    pass
+    if sense_walls(runner, maze)[1]:
+        raise ValueError("There is a wall")
+    else:
+        return forward(runner)
 
 def move(runner, maze):
     """
