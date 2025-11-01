@@ -102,11 +102,11 @@ def go_straight(runner, maze):
     else:
         return forward(runner)
 
-def move(runner, maze):
+def move(runner, maze) -> tuple[tuple[int, int, str], list]:
     """
         need to write function definition
     """
-    pass
+    actions = [] # sequence of actions taken 
 
 def explore(runner, maze, goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
     """
