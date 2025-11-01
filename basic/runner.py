@@ -54,7 +54,40 @@ def sense_walls(runner, maze) -> tuple[bool, bool, bool]:
     """
         need to write function definition
     """
-    pass
+    x = runner[0]
+    y = runner[1]
+    orientation = runner[2]
+    left_wall, front_wall, right_wall = False
+
+    if orientation == "N":
+        if maze[x-1][y] == "#":
+            left_wall = True
+        if maze[x][y+1] == "#":
+            front_wall = True
+        if maze[x+1][y] == "#":
+            right_wall = True
+    elif orientation == "E":
+        if maze[x][y+1] == "#":
+            left_wall = True
+        if maze[x+1][y] == "#":
+            front_wall = True
+        if maze[x][y-1] == "#":
+            right_wall = True
+    elif orientation == "S":
+        if maze[x+1][y] == "#":
+            left_wall = True
+        if maze[x][y-1] == "#":
+            front_wall == True
+        if maze[x-1][y] == "#":
+            right_wall = True
+    else: # orientation == "W"
+        if maze[x][y-1] == "#":
+            left_wall = True
+        if maze[x-1][y] == "#":
+            front_wall = True
+        if maze[x][y+1] == "#":
+            right_wall = True
+    return (left_wall, front_wall, right_wall)
 
 def go_straight(runner, maze):
     """
