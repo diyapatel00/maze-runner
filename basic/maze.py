@@ -45,4 +45,18 @@ def get_walls(maze, x_coordinate: int, y_coordinate: int) -> tuple[bool, bool, b
     """
         add function definition
     """
-    pass
+    n_wall, e_wall, s_wall, w_wall = False
+
+    if maze[x_coordinate][y_coordinate - 1] == "#":
+        n_wall = True
+    
+    if maze[x_coordinate+1][y_coordinate] == "#":
+        e_wall = True
+
+    if maze[x_coordinate][y_coordinate-1] == "#":
+        s_wall = True
+
+    if maze[x_coordinate-1][y_coordinate] == "#":
+        w_wall = True
+    
+    return (n_wall, e_wall, s_wall, w_wall)
