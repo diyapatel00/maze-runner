@@ -49,3 +49,27 @@ def forward(runner: tuple[int, int, str]) -> tuple[int, int, str]:
         runner[0] -= 1
     else:
         runner[2] -= 1
+
+def sense_walls(runner, maze) -> tuple[bool, bool, bool]:
+    """
+        need to write function definition
+    """
+    pass
+
+def go_straight(runner, maze):
+    """
+        need to write function definition
+    """
+    pass
+
+def move(runner, maze):
+    """
+        need to write function definition
+    """
+    pass
+
+def explore(runner, maze, goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
+    """
+        need to write function definition
+    """
+    pass
