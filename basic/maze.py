@@ -16,19 +16,23 @@ def create_maze(width: int = 5, length: int = 5):
 
     return maze
 
-print(create_maze())
+# print(create_maze())
 
 def add_horizontal_wall(maze, x_coordinate, horizontal_line):
     """
         add function definition
     """
-    pass
+    maze[x_coordinate][horizontal_line] = "#"
+    return maze
+
+#print(add_horizontal_wall(maze, 1, 1))
 
 def add_vertical_wall(maze, y_coordinate, vertical_line):
     """
         add function definition
     """
-    pass
+    maze[y_coordinate, vertical_line] = "#"
+    return maze
 
 def get_dimensions(maze) -> tuple[int, int]:
     """
