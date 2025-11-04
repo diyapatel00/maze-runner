@@ -106,66 +106,66 @@ def move(runner, maze) -> tuple[tuple[int, int, str], list[str]]:
     """
         need to write function definition
     """
-    actions = [] # sequence of actions taken 
     walls = sense_walls(runner, maze)
     
     if runner[2] == "N":
         if not walls[0]:
             runner[0] -= 1
-            actions.append("LF")
+            return (runner, "LF")
         elif not walls[1]:
             runner[1] += 1
-            actions.append("F")
+            return (runner, "F")
         elif not walls[2]:
             runner[0] += 1
-            actions.append("RF")
+            return (runner, "RF")
         else:
             runner [1] -= 1
-            actions.append("B")
+            return (runner, "B")
     elif runner[2] == "E":
         if not walls[0]:
             runner[1] += 1
-            actions.append("LF")
+            return (runner, "LF")
         elif not walls[1]:
             runner[0] += 1
-            actions.append("F")
+            return (runner, "F")
         elif not walls[2]:
             runner[1] -= 1
-            actions.append("RF")
+            return (runner, "RF")
         else:
             runner[0] -= 1
-            actions.append("B")
+            return (runner, "B")
     elif runner[2] == "S":
         if not walls[0]:
             runner[0] += 1
-            actions.append("LF")
+            return (runner, "LF")
         elif not walls[1]:
             runner[1] -= 1
-            actions.append("F")
+            return (runner, "F")
         elif not walls[2]:
             runner[0] -= 1
-            actions.append("RF")
+            return (runner, "RF")
         else:
             runner[1] += 1
-            actions.append("B")
+            return (runner, "B")
     else:
         if not walls[0]:
             runner[1] -= 1
-            actions.append("LF")
+            return (runner, "LF")
         elif not walls[1]:
             runner[0] -= 1
-            actions.append("F")
+            return (runner, "F")
         elif not walls[2]:
             runner[1] += 1
-            actions.append("RF")
+            return (runner, "RF")
         else:
             runner[0] += 1
-            actions.append("B")
-    
-    return (runner, actions)
+            return (runner, "B")
 
 def explore(runner, maze, goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
     """
         need to write function definition
     """
+    movements = []
+    if goal == None:
+        goal = (len(maze)-1, len(maze[0])-1)
     pass
