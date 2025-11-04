@@ -102,11 +102,67 @@ def go_straight(runner, maze):
     else:
         return forward(runner)
 
-def move(runner, maze) -> tuple[tuple[int, int, str], list]:
+def move(runner, maze) -> tuple[tuple[int, int, str], list[str]]:
     """
         need to write function definition
     """
     actions = [] # sequence of actions taken 
+    walls = sense_walls(runner, maze)
+    
+    if runner[2] == "N":
+        if not walls[0]:
+            runner[0] -= 1
+            actions.append("LF")
+        elif not walls[1]:
+            runner[1] += 1
+            actions.append("F")
+        elif not walls[2]:
+            runner[0] += 1
+            actions.append("RF")
+        else:
+            runner [1] -= 1
+            actions.append("B")
+    elif runner[2] == "E":
+        if not walls[0]:
+            runner[1] += 1
+            actions.append("LF")
+        elif not walls[1]:
+            runner[0] += 1
+            actions.append("F")
+        elif not walls[2]:
+            runner[1] -= 1
+            actions.append("RF")
+        else:
+            runner[0] -= 1
+            actions.append("B")
+    elif runner[2] == "S":
+        if not walls[0]:
+            runner[0] += 1
+            actions.append("LF")
+        elif not walls[1]:
+            runner[1] -= 1
+            actions.append("F")
+        elif not walls[2]:
+            runner[0] -= 1
+            actions.append("RF")
+        else:
+            runner[1] += 1
+            actions.append("B")
+    else:
+        if not walls[0]:
+            runner[1] -= 1
+            actions.append("LF")
+        elif not walls[1]:
+            runner[0] -= 1
+            actions.append("F")
+        elif not walls[2]:
+            runner[1] += 1
+            actions.append("RF")
+        else:
+            runner[0] += 1
+            actions.append("B")
+    
+    return (runner, actions)
 
 def explore(runner, maze, goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
     """
