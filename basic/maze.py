@@ -1,15 +1,15 @@
-def create_maze(width: int = 5, length: int = 5):
+def create_maze(width: int = 5, height: int = 5):
     """
         add function definition
     """
     maze = [["#"] * width]
 
     row = ["#"]
-    for i in range(1, length-1):
+    for i in range(1, width-1):
         row.append(".")
     row.append("#")
 
-    for i in range(1,width-1):
+    for i in range(1,height-1):
         maze.append(row)
 
     maze.append(["#"] * width)
@@ -39,7 +39,8 @@ def get_dimensions(maze) -> tuple[int, int]:
     """
     maze_width = len(maze[0])
     maze_length = len(maze)
-    return (maze_width, maze_length)
+    return maze_width, maze_length
+
 
 def get_walls(maze, x_coordinate: int, y_coordinate: int) -> tuple[bool, bool, bool, bool]:
     """
