@@ -7,8 +7,8 @@ __maintainer__ = "Heather Packer"
 __email__ = "hp3@ecs.soton.ac.uk"
 __status__ = "Prototype"
 
-from maze import get_dimensions, get_walls
-from runner import get_x, get_y, get_orientation
+from basic import maze
+from basic import runner
 
 def render(maze, runner=None) -> str:
     """Return a rendering of a maze as a string.

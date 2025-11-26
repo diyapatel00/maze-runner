@@ -11,14 +11,7 @@ __maintainer__ = "Son Hoang"
 __email__ = "T.S.Hoang@soton.ac.uk"
 __status__ = "Prototype"
 
-from maze import (  # type: ignore
-    create_maze,
-    get_dimensions,
-    get_walls,
-    add_horizontal_wall,
-    add_vertical_wall,
-)
-
+from basic.maze import *
 
 def test_create_maze_get_dimensions() -> None:
     """A Unit test for :py:func:`~maze.create_maze` and

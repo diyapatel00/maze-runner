@@ -11,17 +11,7 @@ __maintainer__ = "Son Hoang"
 __email__ = "T.S.Hoang@soton.ac.uk"
 __status__ = "Prototype"
 
-from maze import create_maze, add_horizontal_wall  # type: ignore
-from runner import (  # type: ignore
-    create_runner,
-    sense_walls,
-    go_straight,
-    get_x,
-    get_y,
-    turn,
-    get_orientation,
-    move,
-)
+from basic import * # type: ignore
 
 
 def test_runner_sense_walls() -> None:
