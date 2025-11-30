@@ -12,7 +12,7 @@ __email__ = "T.S.Hoang@soton.ac.uk"
 __status__ = "Prototype"
 
 
-from basic import runner
+from basic.runner import *
 
 
 def test_create_runner() -> None:
