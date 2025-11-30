@@ -2,17 +2,19 @@ def create_maze(width: int = 5, height: int = 5):
     """
         add function definition
     """
-    maze = [["#"] * width]
+    maze_width = width * 2 + 1
+    maze_height = height * 2 + 1
+    maze = [["#"] * (maze_width)]
 
     row = ["#"]
-    for i in range(1, width-1):
+    for i in range(1, maze_width-1):
         row.append(".")
     row.append("#")
 
-    for i in range(1,height-1):
+    for i in range(1,maze_height-1):
         maze.append(row)
 
-    maze.append(["#"] * width)
+    maze.append(["#"] * maze_width)
     return maze
 
 # print(create_maze())
@@ -41,14 +43,13 @@ def get_dimensions(maze) -> tuple[int, int]:
     maze_length = len(maze)
     return maze_width, maze_length
 
-
-def get_walls(maze, x_coordinate: int, y_coordinate: int) -> tuple[bool, bool, bool, bool]:
+def get_walls(maze: list[list[str]], x_coordinate: int, y_coordinate: int) -> tuple[bool, bool, bool, bool]:
     """
         add function definition
     """
-    n_wall, e_wall, s_wall, w_wall = False
+    n_wall, e_wall, s_wall, w_wall = False, False, False, False
 
-    if maze[x_coordinate][y_coordinate - 1] == "#":
+    if maze[x_coordinate][y_coordinate-1] == "#":
         n_wall = True
     
     if maze[x_coordinate+1][y_coordinate] == "#":
@@ -61,3 +62,6 @@ def get_walls(maze, x_coordinate: int, y_coordinate: int) -> tuple[bool, bool, b
         w_wall = True
     
     return (n_wall, e_wall, s_wall, w_wall)
+
+maze = create_maze(11, 5)
+assert get_walls(maze, 4, 2) == (False, False, False, False)
