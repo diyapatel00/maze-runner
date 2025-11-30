@@ -40,8 +40,8 @@ def get_dimensions(maze) -> tuple[int, int]:
     """
         add function definition
     """
-    maze_width = len(maze[0])
-    maze_length = len(maze)
+    maze_width = (len(maze[0]) - 1) / 2
+    maze_length = (len(maze) - 1) / 2
     return maze_width, maze_length
 
 def get_walls(maze: list[list[str]], x_coordinate: int, y_coordinate: int) -> tuple[bool, bool, bool, bool]:
