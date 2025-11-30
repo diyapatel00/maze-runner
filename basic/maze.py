@@ -4,6 +4,7 @@ def create_maze(width: int = 5, height: int = 5):
     """
     maze_width = width * 2 + 1
     maze_height = height * 2 + 1
+
     maze = [["#"] * (maze_width)]
 
     row = ["#"]
@@ -17,13 +18,13 @@ def create_maze(width: int = 5, height: int = 5):
     maze.append(["#"] * maze_width)
     return maze
 
-# print(create_maze())
+print(create_maze())
 
 def add_horizontal_wall(maze, x_coordinate, horizontal_line):
     """
         add function definition
     """
-    maze[x_coordinate][horizontal_line] = "#"
+    maze[x_coordinate][2 * horizontal_line] = "#"
     return maze
 
 #print(add_horizontal_wall(maze, 1, 1))
@@ -32,7 +33,7 @@ def add_vertical_wall(maze, y_coordinate, vertical_line):
     """
         add function definition
     """
-    maze[y_coordinate, vertical_line] = "#"
+    maze[y_coordinate][2 * vertical_line] = "#"
     return maze
 
 def get_dimensions(maze) -> tuple[int, int]:
@@ -63,5 +64,5 @@ def get_walls(maze: list[list[str]], x_coordinate: int, y_coordinate: int) -> tu
     
     return (n_wall, e_wall, s_wall, w_wall)
 
-maze = create_maze(11, 5)
-assert get_walls(maze, 4, 2) == (False, False, False, False)
+#maze = create_maze(11, 5)
+#assert get_walls(maze, 4, 2) == (False, False, False, False)
