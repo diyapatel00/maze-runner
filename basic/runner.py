@@ -30,66 +30,60 @@ def turn(runner: tuple[int, int, str], direction: str) -> tuple[int, int, str]:
     left_orientation = {"N": "W", "E": "N", "S": "E", "W": "S"}
     right_orientation = {"N": "E", "E": "S", "S": "W", "W": "N"}
 
-    while True: 
-        if direction == "Left":
-            runner[2] = left_orientation[runner[2]]
-            return runner
-        else:
-            runner[2] = right_orientation[runner[2]]
-            return runner
-
+    if direction == "Left":
+        return (runner[0], runner[1], left_orientation[runner[2]])
+    else:
+        return (runner[0], runner[1], right_orientation[runner[2]])
 
 def forward(runner: tuple[int, int, str]) -> tuple[int, int, str]:
     """
         need to write function definition
     """
     if runner[2] == "N":
-        runner[0] += 1
+        return (runner[0] + 1, runner[1], runner[2])
     elif runner[2] == "E":
-        runner[1] += 1
+        return (runner[0], runner[1] + 1, runner[2])
     elif runner[2] == "S":
-        runner[0] -= 1
+        return (runner[0], runner[1] - 1, runner[2])
     else:
-        runner[2] -= 1
-
-    return runner
+        return (runner[0] - 1, runner[1], runner[2])
 
 def sense_walls(runner, maze) -> tuple[bool, bool, bool]:
     """
         need to write function definition
     """
-    x = get_x(runner)
-    y = get_y(runner)
+    x = 2 * get_x(runner) + 1
+    y = 2 * get_y(runner) + 1
     orientation = get_orientation(runner)
-    left_wall, front_wall, right_wall = False
+    left_wall, front_wall, right_wall = False, False, False
 
     if orientation == "N":
-        if maze[x-1][y] == "#":
+        if maze[y][x-1] == "|":
             left_wall = True
-        if maze[x][y+1] == "#":
+        if maze[y+1][x] == "_":
             front_wall = True
-        if maze[x+1][y] == "#":
+        if maze[y][x+1] == "|":
             right_wall = True
     elif orientation == "E":
-        if maze[x][y+1] == "#":
+        if maze[y+1][x] == "_":
             left_wall = True
-        if maze[x+1][y] == "#":
+        if maze[y][x+1] == "|":
             front_wall = True
-        if maze[x][y-1] == "#":
+        if maze[y-1][x] == "_":
             right_wall = True
     elif orientation == "S":
-        if maze[x+1][y] == "#":
+        if maze[y][x+1] == "|":
             left_wall = True
-        if maze[x][y-1] == "#":
+        if maze[y-1][x] == "_":
             front_wall == True
-        if maze[x-1][y] == "#":
+        if maze[y][x-1] == "|":
             right_wall = True
     else: # orientation == "W"
-        if maze[x][y-1] == "#":
+        if maze[y-1][x] == "_":
             left_wall = True
-        if maze[x-1][y] == "#":
+        if maze[y][x-1] == "|":
             front_wall = True
-        if maze[x][y+1] == "#":
+        if maze[y+1][x] == "_":
             right_wall = True
     return (left_wall, front_wall, right_wall)
  

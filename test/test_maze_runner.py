@@ -11,8 +11,8 @@ __maintainer__ = "Son Hoang"
 __email__ = "T.S.Hoang@soton.ac.uk"
 __status__ = "Prototype"
 
-from basic import * # type: ignore
-
+from basic.maze import * # type: ignore
+from basic.runner import *
 
 def test_runner_sense_walls() -> None:
     """A Unit test for :py:func:`~runner.sense_walls`
