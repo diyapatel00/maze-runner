@@ -40,9 +40,9 @@ def forward(runner: tuple[int, int, str]) -> tuple[int, int, str]:
         need to write function definition
     """
     if runner[2] == "N":
-        return (runner[0] + 1, runner[1], runner[2])
-    elif runner[2] == "E":
         return (runner[0], runner[1] + 1, runner[2])
+    elif runner[2] == "E":
+        return (runner[0] + 1, runner[1], runner[2])
     elif runner[2] == "S":
         return (runner[0], runner[1] - 1, runner[2])
     else:
@@ -58,32 +58,32 @@ def sense_walls(runner, maze) -> tuple[bool, bool, bool]:
     left_wall, front_wall, right_wall = False, False, False
 
     if orientation == "N":
-        if maze[y][x-1] == "|":
+        if maze[y][x-1] == "|" or maze[y][x-1] == "#":
             left_wall = True
-        if maze[y+1][x] == "_":
+        if maze[y+1][x] == "_" or maze[y+1][x] == "#":
             front_wall = True
-        if maze[y][x+1] == "|":
+        if maze[y][x+1] == "|" or maze[y][x+1] == "#":
             right_wall = True
     elif orientation == "E":
-        if maze[y+1][x] == "_":
+        if maze[y+1][x] == "_" or maze[y+1][x] == "#":
             left_wall = True
-        if maze[y][x+1] == "|":
+        if maze[y][x+1] == "|" or maze[y][x+1] == "#":
             front_wall = True
-        if maze[y-1][x] == "_":
+        if maze[y-1][x] == "_" or maze[y-1][x] == "#":
             right_wall = True
     elif orientation == "S":
-        if maze[y][x+1] == "|":
+        if maze[y][x+1] == "|" or maze[y][x+1] == "#":
             left_wall = True
-        if maze[y-1][x] == "_":
+        if maze[y-1][x] == "_" or maze[y-1][x] == "#":
             front_wall == True
-        if maze[y][x-1] == "|":
+        if maze[y][x-1] == "|" or maze[y][x-1] == "#":
             right_wall = True
     else: # orientation == "W"
-        if maze[y-1][x] == "_":
+        if maze[y-1][x] == "_" or maze[y-1][x] == "#":
             left_wall = True
-        if maze[y][x-1] == "|":
+        if maze[y][x-1] == "|" or maze[y][x-1] == "#":
             front_wall = True
-        if maze[y+1][x] == "_":
+        if maze[y+1][x] == "_" or maze[y+1][x] == "#":
             right_wall = True
     return (left_wall, front_wall, right_wall)
  
@@ -96,70 +96,49 @@ def go_straight(runner, maze):
     else:
         return forward(runner)
 
-def move(runner, maze) -> tuple[tuple[int, int, str], list[str]]:
+def move(runner, maze) -> tuple[tuple[int, int, str], str]:
     """
         need to write function definition
     """
     walls = sense_walls(runner, maze)
     
-    if runner[2] == "N":
-        if not walls[0]:
-            runner[0] -= 1
-            return (runner, "LF")
-        elif not walls[1]:
-            runner[1] += 1
-            return (runner, "F")
-        elif not walls[2]:
-            runner[0] += 1
-            return (runner, "RF")
-        else:
-            runner [1] -= 1
-            return (runner, "B")
-    elif runner[2] == "E":
-        if not walls[0]:
-            runner[1] += 1
-            return (runner, "LF")
-        elif not walls[1]:
-            runner[0] += 1
-            return (runner, "F")
-        elif not walls[2]:
-            runner[1] -= 1
-            return (runner, "RF")
-        else:
-            runner[0] -= 1
-            return (runner, "B")
-    elif runner[2] == "S":
-        if not walls[0]:
-            runner[0] += 1
-            return (runner, "LF")
-        elif not walls[1]:
-            runner[1] -= 1
-            return (runner, "F")
-        elif not walls[2]:
-            runner[0] -= 1
-            return (runner, "RF")
-        else:
-            runner[1] += 1
-            return (runner, "B")
+    if not walls[0]:
+        return (forward(turn(runner, "Left")), "LF")
+    elif not walls[1]:
+        return (forward(runner), "F")
+    elif not walls[2]:
+        return (forward(turn(runner, "Right")), "RF")
     else:
-        if not walls[0]:
-            runner[1] -= 1
-            return (runner, "LF")
-        elif not walls[1]:
-            runner[0] -= 1
-            return (runner, "F")
-        elif not walls[2]:
-            runner[1] += 1
-            return (runner, "RF")
-        else:
-            runner[0] += 1
-            return (runner, "B")
+        return (turn(turn(runner, "Right"), "Right"), "B")
 
 def explore(runner, maze, goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
     """
         need to write function definition
     """
     movements = []
+
     if goal == None:
         goal = (len(maze)-1, len(maze[0])-1)
-    pass
+    
+    while get_x(runner) != goal[0] and get_y(runner) != goal[1]:
+        movement = move(runner, maze)
+        movements.append(movement)
+
+    return movements
+
+"""# testing explore function
+from maze import *
+maze = create_maze(11, 5)
+maze = add_horizontal_wall(maze, 0, 1)
+maze = add_horizontal_wall(maze, 1, 1)
+maze = add_horizontal_wall(maze, 2, 1)
+maze = add_horizontal_wall(maze, 1, 2)
+maze = add_horizontal_wall(maze, 2, 2)
+maze = add_horizontal_wall(maze, 3, 2)
+maze = add_vertical_wall(maze, 0, 4)
+maze = add_vertical_wall(maze, 1, 4)
+maze = add_vertical_wall(maze, 1, 1)
+print(maze)
+output_maze(maze)
+runner = create_runner(0, 0, "N")
+print(explore(runner, maze, (1, 1)))"""

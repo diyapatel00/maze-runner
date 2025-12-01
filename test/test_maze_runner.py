@@ -97,4 +97,4 @@ def test_explore() -> None:
     get to the target destination. This will left as an exercise for any keen
     testers.
     """
-    pass
+    
