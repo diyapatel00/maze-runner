@@ -39,16 +39,16 @@ def shortest_path(maze: list[list[str]], starting: tuple[int, int] = None, goal:
     visited = set()
     shortest_path = []
     
+    
     while goal not in visited:
         for i, move in enumerate(movements):
             index_at = (move[0], move[1])
-            if index_at not in visited:
-                visited.add(index_at)
-            else:
+            if move[2] == "B":
                 start_index = (movements[i-1][0], movements[i-1][1])
-                shortest_path.extend(movements[:i])
-                movements = explore()
-        
+                shortest_path.extend(movements[:i+1])
+                movements = explore((start_index[0], start_index[1], "N"), maze, goal)
+                break
+        print(movements)
 
 # for testing shortest path
 from maze import *
