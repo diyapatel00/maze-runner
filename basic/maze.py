@@ -1,9 +1,12 @@
+"""Module for creating and updating the maze."""
+
+
 def create_maze(width: int = 5, height: int = 5) -> list[list[str]]:
     """Return a maze created with given dimensions.
 
     :param width: The horizontal dimension of the maze (int)
     :param height: The vertical dimension of the maze (int)
-    :return: Maze with given dimensions (2D list)
+    :return: Maze with given dimensions (2D list: str)
     """
     maze_width = width * 2 + 1
     maze_height = height * 2 + 1
@@ -20,47 +23,49 @@ def create_maze(width: int = 5, height: int = 5) -> list[list[str]]:
 
     return maze
 
-#print(create_maze())
 
 def add_horizontal_wall(maze: list[list[str]], x_coordinate: int, horizontal_line: int) -> list[list[str]]:
-    """Return updated maze after adding horizontal wall to co-ordinates given
+    """Return updated maze after adding horizontal wall to co-ordinates given.
 
     :param maze: Current version of the maze (2D list)
     :param x_coordinate: Horizontal co-ordinate of where wall is to be placed (int)
     :param horizontal_line: Vertical axis co-ordinate of where wall is to be placed (int)
-    :param return: Updated maze with wall added (2D list)
+    :return: Updated maze with wall added (2D list: str)
     """
     maze[2 * horizontal_line][2 * x_coordinate + 1] = "_"
     return maze
 
-def add_vertical_wall(maze: list[list[str]], y_coordinate: int, vertical_line: int) -> list[list[str]]:
-    """Return updated maze after adding vertical wall to co-ordinates given
 
-    :param maze: Current version of the maze (2D list)
+def add_vertical_wall(maze: list[list[str]], y_coordinate: int, vertical_line: int) -> list[list[str]]:
+    """Return updated maze after adding vertical wall to co-ordinates given.
+
+    :param maze: Current version of the maze (2D list: str)
     :param y_coordinate: Vertical co-ordinate of where wall is to be placed (int)
     :param vertical_line: Horizontal axis co-ordinate of where wall is to be placed (int)
-    :param return: Updated maze with wall added (2D list) 
+    :param return: Updated maze with wall added (2D list: str) 
     """
     maze[2 * y_coordinate + 1][2 * vertical_line] = "|"
     return maze
 
-def get_dimensions(maze: list[list[str]]) -> tuple[int, int]:
-    """Return the dimensions of the maze
 
-    :param maze: Current version of the maze (2D list)
-    :param return: Current maze width and current maze length (tuple of int)
+def get_dimensions(maze: list[list[str]]) -> tuple[int, int]:
+    """Return the dimensions of the maze.
+
+    :param maze: Current version of the maze (2D list: str)
+    :return: Current maze width and current maze length (tuple: int, int)
     """
     maze_width = (len(maze[0]) - 1) / 2
     maze_length = (len(maze) - 1) / 2
     return maze_width, maze_length
 
-def get_walls(maze: list[list[str]], x_coordinate: int, y_coordinate: int) -> tuple[bool, bool, bool, bool]:
-    """Returns whether there are walls North, East, South, West of the given co-ordinates
 
-    :param maze: Current version of the maze (2D list)
+def get_walls(maze: list[list[str]], x_coordinate: int, y_coordinate: int) -> tuple[bool, bool, bool, bool]:
+    """Return whether there are walls North, East, South, West of the given co-ordinates.
+
+    :param maze: Current version of the maze (2D list: str)
     :param x_coordinate: Horizontal co-ordinate of point to be assessed (int)
     :param y_coordinate: Vertical axis co-ordinate of point to be assessed (int)
-    :param return: True or False depending on whether wall is present in each direction (tuple of bool)
+    :return: True or False depending on whether wall is present in each direction (tuple: bool, bool, bool, bool)
     """
     n_wall, e_wall, s_wall, w_wall = False, False, False, False
 
@@ -82,10 +87,11 @@ def get_walls(maze: list[list[str]], x_coordinate: int, y_coordinate: int) -> tu
     
     return (n_wall, e_wall, s_wall, w_wall)
 
+
 def output_maze(maze: list[list[str]]) -> None:
-    """Prints the maze for better viewing of appearance of walls
+    """Print the maze for better viewing of appearance of walls.
     
-    :param maze: Current version of the maze (2D list)
+    :param maze: Current version of the maze (2D list: str)
     """
     for row in reversed(maze):
         print(row)
