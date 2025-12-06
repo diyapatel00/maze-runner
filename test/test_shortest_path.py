@@ -12,7 +12,7 @@ __email__ = "T.S.Hoang@soton.ac.uk"
 __status__ = "Prototype"
 
 from basic.maze import *
-#from basic import maze_runner
+from basic.maze_runner import *
 
 def test_shortest_path() -> None:
     """A Unit test for :py:func:`~maze_runner.shortest_path`
