@@ -18,7 +18,7 @@ def get_x(runner: tuple[int, int, str]) -> int:
     :param runner: Current position of the runner (tuple: int, int, str)
     :return: Current x-coordinate of the runner (int)
     """
-    return 2 * runner[0] + 1
+    return runner[0]
 
 
 def get_y(runner: tuple[int, int, str]) -> int:
@@ -27,7 +27,7 @@ def get_y(runner: tuple[int, int, str]) -> int:
     :param runner: Current position of the runner (tuple: int, int, str)
     :return: Current y-coordinate of the runner (int)
     """
-    return 2 * runner[1] + 1
+    return runner[1]
 
 
 def get_orientation(runner: tuple[int, int, str]) -> str:
@@ -78,8 +78,8 @@ def sense_walls(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[bo
     :param maze: Current version of maze (2D list)
     :return: If there are walls around the runner (tuple: bool, bool, bool)
     """
-    x = get_x(runner)
-    y = get_y(runner)
+    x = 2 * get_x(runner) + 1
+    y = 2 * get_y(runner) + 1
     orientation = get_orientation(runner)
     left_wall, front_wall, right_wall = False, False, False
 
@@ -157,11 +157,6 @@ def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int
     movements = []
     found_goal = False
 
-    if goal == None:
-        goal_index = (len(maze[0])-2, len(maze)-2)
-    else:
-        goal_index = (2 * goal[0] + 1, 2 * goal[1] + 1)
-
     #print(goal_index)
     #print((get_y(runner), get_x(runner)))
     
@@ -173,7 +168,7 @@ def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int
         runner = movement[0]
 
         # check if goal has been reached
-        if (get_x(runner), get_y(runner)) == goal_index:
+        if (get_x(runner), get_y(runner)) == goal:
             found_goal = True
 
         maze[get_y(runner)][get_x(runner)] = "Y"
