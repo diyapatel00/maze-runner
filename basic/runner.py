@@ -103,11 +103,14 @@ def move(runner, maze) -> tuple[tuple[int, int, str], str]:
     walls = sense_walls(runner, maze)
     
     if not walls[0]:
-        return (forward(turn(runner, "Left")), "LF")
+        runner = forward(turn(runner, "Left"))
+        return (runner, "LF")
     elif not walls[1]:
-        return (forward(runner), "F")
+        runner = forward(runner)
+        return (runner, "F")
     elif not walls[2]:
-        return (forward(turn(runner, "Right")), "RF")
+        runner = forward(turn(runner, "Right"))
+        return (runner, "RF")
     else:
         return (turn(turn(runner, "Right"), "Right"), "B")
 
@@ -116,17 +119,24 @@ def explore(runner, maze, goal: tuple[int, int] = None) -> list[tuple[int, int, 
         need to write function definition
     """
     movements = []
+    found_goal = False
 
     if goal == None:
         goal = (len(maze)-1, len(maze[0])-1)
+
+    print(goal)
     
-    while get_x(runner) != goal[0] and get_y(runner) != goal[1]:
+    while not found_goal:
         movement = move(runner, maze)
         movements.append(movement)
 
+        # check if goal has been reached
+        if (get_x(runner), get_y(runner)) == goal:
+            found_goal = True
+
     return movements
 
-"""# testing explore function
+# testing explore function
 from maze import *
 maze = create_maze(11, 5)
 maze = add_horizontal_wall(maze, 0, 1)
@@ -138,7 +148,12 @@ maze = add_horizontal_wall(maze, 3, 2)
 maze = add_vertical_wall(maze, 0, 4)
 maze = add_vertical_wall(maze, 1, 4)
 maze = add_vertical_wall(maze, 1, 1)
+maze[1][3] = "X"
 print(maze)
 output_maze(maze)
 runner = create_runner(0, 0, "N")
-print(explore(runner, maze, (1, 1)))"""
+print(sense_walls(runner, maze))
+#print(explore(runner, maze, (1, 0)))
+runner, direction = move(runner, maze)
+print(runner)
+print(get_x(runner), get_y(runner))
