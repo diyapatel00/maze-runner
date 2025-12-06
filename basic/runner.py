@@ -158,10 +158,12 @@ def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int
     found_goal = False
 
     if goal == None:
-        goal = (len(maze)-1, len(maze[0])-1)
+        goal_index = (len(maze[0])-2, len(maze)-2)
+    else:
+        goal_index = (2 * goal[1] + 1, 2 * goal[0] + 1)
 
-    print(goal)
-    print((get_y(runner), get_x(runner)))
+    print(goal_index)
+    #print((get_y(runner), get_x(runner)))
     
     while not found_goal:
         movement = move(runner, maze)
@@ -169,11 +171,13 @@ def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int
         movements.append((runner[0], runner[1], movement[1]))
 
         # check if goal has been reached
-        if (get_y(runner), get_x(runner)) == goal:
+        if (get_x(runner), get_y(runner)) == goal_index:
             found_goal = True
 
-        #maze[get_y(runner)][get_x(runner)] = "Y"
-        #print(output_maze(maze))
+        maze[get_y(runner)][get_x(runner)] = "Y"
+        output_maze(maze)
+        #print(runner)
+
     return movements
 
 
@@ -184,20 +188,15 @@ maze = add_horizontal_wall(maze, 0, 1)
 maze = add_horizontal_wall(maze, 1, 1)
 maze = add_horizontal_wall(maze, 2, 1)
 maze = add_horizontal_wall(maze, 1, 2)
-maze = add_horizontal_wall(maze, 2, 2)
-maze = add_horizontal_wall(maze, 3, 2)
-maze = add_horizontal_wall(maze, 1, 1)
-maze = add_vertical_wall(maze, 0, 4)
-maze = add_vertical_wall(maze, 1, 4)
 maze = add_vertical_wall(maze, 1, 1)
 maze[3][3] = "X"
 #print(maze)
 #output_maze(maze)
 runner = create_runner(0, 0, "N")
-maze[get_y(runner)][get_x(runner)] = "Y"
-#output_maze(maze)
+maze[get_y(runner)][get_x(runner)] = "^"
+output_maze(maze)
 #print(sense_walls(runner, maze))
-print(explore(runner, maze, (3, 3)))
+print(explore(runner, maze, goal = (1,1)))
 #print(runner)
 #new_runner = move(runner, maze)[0]
 #print(get_x(new_runner), get_y(new_runner))
