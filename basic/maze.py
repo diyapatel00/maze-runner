@@ -3,10 +3,13 @@
 
 def create_maze(width: int = 5, height: int = 5) -> list[list[str]]:
     """Return a maze created with given dimensions.
-
-    :param width: The horizontal dimension of the maze (int)
-    :param height: The vertical dimension of the maze (int)
-    :return: Maze with given dimensions (2D list: str)
+    
+    :param width: Horizontal dimension of the maze
+    :type width: int
+    :param height: Vertical dimension of the maze
+    :type height: int
+    :return: Maze with given dimensions
+    :rtype: list[list[str]]
     """
     maze_width = width * 2 + 1
     maze_height = height * 2 + 1
@@ -27,10 +30,15 @@ def create_maze(width: int = 5, height: int = 5) -> list[list[str]]:
 def add_horizontal_wall(maze: list[list[str]], x_coordinate: int, horizontal_line: int) -> list[list[str]]:
     """Return updated maze after adding horizontal wall to co-ordinates given.
 
-    :param maze: Current version of the maze (2D list)
-    :param x_coordinate: Horizontal co-ordinate of where wall is to be placed (int)
-    :param horizontal_line: Vertical axis co-ordinate of where wall is to be placed (int)
-    :return: Updated maze with wall added (2D list: str)
+    
+    :param maze: Current version of maze
+    :type maze: list[list[str]]
+    :param x_coordinate: Horizontal co-ordinate of where wall is to be placed
+    :type x_coordinate: int
+    :param horizontal_line: Vertical axis co-ordinate of where wall is to be placed
+    :type horizontal_line: int
+    :return: Updated maze with wall added
+    :rtype: list[list[str]]
     """
     maze[2 * horizontal_line][2 * x_coordinate + 1] = "_"
     return maze
@@ -38,11 +46,15 @@ def add_horizontal_wall(maze: list[list[str]], x_coordinate: int, horizontal_lin
 
 def add_vertical_wall(maze: list[list[str]], y_coordinate: int, vertical_line: int) -> list[list[str]]:
     """Return updated maze after adding vertical wall to co-ordinates given.
-
-    :param maze: Current version of the maze (2D list: str)
-    :param y_coordinate: Vertical co-ordinate of where wall is to be placed (int)
-    :param vertical_line: Horizontal axis co-ordinate of where wall is to be placed (int)
-    :param return: Updated maze with wall added (2D list: str) 
+    
+    :param maze: Current version of the maze
+    :type maze: list[list[str]]
+    :param y_coordinate: Vertical co-ordinate of where wall is to be placed
+    :type y_coordinate: int
+    :param vertical_line: Horizontal axis co-ordinate of where wall is to be placed
+    :type vertical_line: int
+    :return: Updated maze with wall added
+    :rtype: list[list[str]]
     """
     maze[2 * y_coordinate + 1][2 * vertical_line] = "|"
     return maze
@@ -61,11 +73,15 @@ def get_dimensions(maze: list[list[str]]) -> tuple[int, int]:
 
 def get_walls(maze: list[list[str]], x_coordinate: int, y_coordinate: int) -> tuple[bool, bool, bool, bool]:
     """Return whether there are walls North, East, South, West of the given co-ordinates.
-
-    :param maze: Current version of the maze (2D list: str)
-    :param x_coordinate: Horizontal co-ordinate of point to be assessed (int)
-    :param y_coordinate: Vertical axis co-ordinate of point to be assessed (int)
-    :return: True or False depending on whether wall is present in each direction (tuple: bool, bool, bool, bool)
+    
+    :param maze: Current version of the maze
+    :type maze: list[list[str]]
+    :param x_coordinate: Horizontal co-ordinate of point to be assessed
+    :type x_coordinate: int
+    :param y_coordinate: Vertical axis co-ordinate of point to be assessed
+    :type y_coordinate: int
+    :return: True or False depending on whether wall is present in each direction
+    :rtype: tuple[bool, bool, bool, bool]
     """
     n_wall, e_wall, s_wall, w_wall = False, False, False, False
 
@@ -91,7 +107,8 @@ def get_walls(maze: list[list[str]], x_coordinate: int, y_coordinate: int) -> tu
 def output_maze(maze: list[list[str]]) -> None:
     """Print the maze for better viewing of appearance of walls.
     
-    :param maze: Current version of the maze (2D list: str)
+    :param maze: Current version of the maze
+    :type maze: list[list[str]]
     """
     for row in reversed(maze):
         print(row)
