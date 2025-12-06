@@ -1,0 +1,5 @@
+things to do:
+- change docstring formatting to include separate line for type
+- check formatting of all code with some plugin
+- remove unnecessary comments
+- add comments to unintuitive lines
