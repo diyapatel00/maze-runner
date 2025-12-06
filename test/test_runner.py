@@ -13,6 +13,7 @@ __status__ = "Prototype"
 
 
 from basic.runner import *
+from basic.maze import *
 
 
 def test_create_runner() -> None:

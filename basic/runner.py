@@ -9,26 +9,25 @@ def create_runner(x: int = 0, y: int = 0, orientation: str = "N") -> tuple[int, 
     :param orientation: Starting orientation (North, East, South, West) of the runner, defaults to 'N' (str)
     :return: Starting position of the runner (tuple: int, int, str)
     """
-    runner = (x, y, orientation)
-    return runner
+    return (x, y, orientation)
 
 
 def get_x(runner: tuple[int, int, str]) -> int:
-    """Return the current x-coordinate of the runner.
+    """Return the current x-coordinate of the actual maze list of the runner.
 
     :param runner: Current position of the runner (tuple: int, int, str)
     :return: Current x-coordinate of the runner (int)
     """
-    return runner[0]
+    return 2 * runner[0] + 1
 
 
 def get_y(runner: tuple[int, int, str]) -> int:
-    """Return the current y-coordinate of the runner.
+    """Return the current y-coordinate of the actual maze list of the runner.
 
     :param runner: Current position of the runner (tuple: int, int, str)
     :return: Current y-coordinate of the runner (int)
     """
-    return runner[1]
+    return 2 * runner[1] + 1
 
 
 def get_orientation(runner: tuple[int, int, str]) -> str:
@@ -79,8 +78,8 @@ def sense_walls(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[bo
     :param maze: Current version of maze (2D list)
     :return: If there are walls around the runner (tuple: bool, bool, bool)
     """
-    x = 2 * get_x(runner) + 1
-    y = 2 * get_y(runner) + 1
+    x = get_x(runner)
+    y = get_y(runner)
     orientation = get_orientation(runner)
     left_wall, front_wall, right_wall = False, False, False
 
@@ -162,13 +161,15 @@ def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int
         goal = (len(maze)-1, len(maze[0])-1)
 
     print(goal)
+    print((get_y(runner), get_x(runner)))
     
     while not found_goal:
         movement = move(runner, maze)
-        movements.append(movement)
+        runner = movement[0]
+        movements.append((runner[0], runner[1], movement[1]))
 
         # check if goal has been reached
-        if (get_x(runner), get_y(runner)) == goal:
+        if (get_y(runner), get_x(runner)) == goal:
             found_goal = True
 
     return movements
@@ -183,15 +184,18 @@ maze = add_horizontal_wall(maze, 2, 1)
 maze = add_horizontal_wall(maze, 1, 2)
 maze = add_horizontal_wall(maze, 2, 2)
 maze = add_horizontal_wall(maze, 3, 2)
+maze = add_horizontal_wall(maze, 1, 1)
 maze = add_vertical_wall(maze, 0, 4)
 maze = add_vertical_wall(maze, 1, 4)
 maze = add_vertical_wall(maze, 1, 1)
-maze[1][3] = "X"
-print(maze)
-output_maze(maze)
+maze[3][3] = "X"
+#print(maze)
+#output_maze(maze)
 runner = create_runner(0, 0, "N")
-print(sense_walls(runner, maze))
-#print(explore(runner, maze, (1, 0)))
-runner, direction = move(runner, maze)
-print(runner)
-print(get_x(runner), get_y(runner))
+maze[get_y(runner)][get_x(runner)] = "^"
+output_maze(maze)
+#print(sense_walls(runner, maze))
+print(explore(runner, maze, (3, 3)))
+#print(runner)
+#new_runner = move(runner, maze)[0]
+#print(get_x(new_runner), get_y(new_runner))
