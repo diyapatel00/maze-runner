@@ -172,6 +172,8 @@ def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int
         if (get_y(runner), get_x(runner)) == goal:
             found_goal = True
 
+        #maze[get_y(runner)][get_x(runner)] = "Y"
+        #print(output_maze(maze))
     return movements
 
 
@@ -192,8 +194,8 @@ maze[3][3] = "X"
 #print(maze)
 #output_maze(maze)
 runner = create_runner(0, 0, "N")
-maze[get_y(runner)][get_x(runner)] = "^"
-output_maze(maze)
+maze[get_y(runner)][get_x(runner)] = "Y"
+#output_maze(maze)
 #print(sense_walls(runner, maze))
 print(explore(runner, maze, (3, 3)))
 #print(runner)
