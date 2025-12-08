@@ -24,15 +24,16 @@ def shortest_path(maze: list[list[str]], starting: tuple[int, int] = (0, 0), goa
     count = 0
     
     while not minimal_path_found:
-        orientations = find_orientation(starting, goal, maze)
+        orientations = find_orientation(maze, starting, goal)
         movements = explore(start_position, maze, goal)
 
         #print(movements)
         #print(f"while Iteration: {count + 1}")
+        visited = set()
 
         for i, move in enumerate(movements):
             minimal_path_found = True
-            if move[2] == "B":
+            if move[2] == "B" or (move[0], move[1]) in visited:
                 curr_orient = orientations[i]
                 if curr_orient == "N":
                     add_horizontal_wall(maze, move[0], move[1] + 1)
@@ -44,6 +45,8 @@ def shortest_path(maze: list[list[str]], starting: tuple[int, int] = (0, 0), goa
                     add_vertical_wall(maze, move[1], move[0])
                 minimal_path_found = False
                 break
+            output_maze(maze)
+            visited.add((move[0], move[1]))
 
     return explore(start_position, maze, goal)
 

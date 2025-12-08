@@ -255,7 +255,7 @@ def find_orientation(maze: list[list[str]], start: tuple[int, int] = (0, 0), ind
         #print(movement)
         position = movement[0]
         orientations.append(position[2])
-        maze[2 * position[1] + 1][2 * position[0] + 1] = "Y"
+        #maze[2 * position[1] + 1][2 * position[0] + 1] = "Y"
         #print(f"goal is: {index}")
         #print(f"current index is: {(get_x(position), get_y(position))}")
         #output_maze(maze)
