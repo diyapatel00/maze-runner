@@ -4,3 +4,4 @@ things to do:
 - check formatting of all code with some plugin
 - remove unnecessary comments
 - add comments to unintuitive lines
+- docstring for find orientation function (rename function and variable names?)
