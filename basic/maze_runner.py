@@ -6,7 +6,7 @@ import argparse
 from runner import *
 from maze import *
 
-def shortest_path(maze: list[list[str]], starting: tuple[int, int] = (0, 0), goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
+def shortest_path(maze: list[list[str]], starting: tuple[int, int] = None, goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
     """Return the sequence of runner co-ordinates and movements for the shortest path between given starting position and goal
     
     :param maze: Current version of the maze to find path from
@@ -18,9 +18,17 @@ def shortest_path(maze: list[list[str]], starting: tuple[int, int] = (0, 0), goa
     :return: List of movements to get from start to goal in minimal steps
     :rtype: list[tuple[int, int, str]]
     """
+    if starting != None:
+        starting = convert_to_tuple(starting)
+    else:
+        starting = (0, 0)
+    
+    if goal != None:
+        goal = convert_to_tuple(goal)
+
     start_position = (starting[0], starting[1], "N")
     minimal_path_found = False
-
+    output_maze(maze)
     count = 0
     
     while not minimal_path_found:
@@ -45,29 +53,12 @@ def shortest_path(maze: list[list[str]], starting: tuple[int, int] = (0, 0), goa
                     add_vertical_wall(maze, move[1], move[0])
                 minimal_path_found = False
                 break
-            output_maze(maze)
             visited.add((move[0], move[1]))
+        
+    output_maze(maze)
 
     return explore(start_position, maze, goal)
 
-maze = create_maze(11, 5)
-maze = add_horizontal_wall(maze, 0, 1)
-maze = add_horizontal_wall(maze, 1, 1)
-maze = add_horizontal_wall(maze, 2, 1)
-maze = add_vertical_wall(maze, 1, 3)
-maze = add_vertical_wall(maze, 2, 3)
-maze = add_vertical_wall(maze, 3, 3)
-maze = add_horizontal_wall(maze, 3, 4)
-maze = add_vertical_wall(maze, 3, 4)
-maze = add_vertical_wall(maze, 2, 4)
-maze = add_horizontal_wall(maze, 4, 4)
-maze = add_horizontal_wall(maze, 5, 4)
-maze = add_horizontal_wall(maze, 6, 4)
-maze = add_horizontal_wall(maze, 7, 4)
-runner = create_runner(0, 0, "N")
-maze[2 * get_y(runner) + 1][2 * get_x(runner) + 1] = "^"
-output_maze(maze)
-print(shortest_path(maze))
 
 def maze_reader(maze_file: str) -> list[list[str]]:
     """
@@ -131,16 +122,22 @@ def maze_reader(maze_file: str) -> list[list[str]]:
 
 #output_maze(maze_reader("test-maze-reader.mz"))
 
-"""if __name__ == "__main__":
+def convert_to_tuple(values: str) -> tuple[int, int]:
+    """DOCSTRING"""
+    split = values.split(",")
+    return (int(split[0]), int(split[1]))
+
+#print(convert_to_tuple("0, 1"))
+
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="ECS Maze Runner")
     
     parser.add_argument("maze", type=str, help="The name of the maze file, e.g., maze1.mz")
-    parser.add_argument("--starting", type=tuple[int, int], help="The starting position, e.g., \"2, 1\"")
-    parser.add_argument("--goal", type=tuple[int, int], help="The goal position, e.g., \"4, 5\"")
+    parser.add_argument("--starting", type=str, help="The starting position, e.g., \"2, 1\"")
+    parser.add_argument("--goal", type=str, help="The goal position, e.g., \"4, 5\"")
 
     args = parser.parse_args()
 
     maze = maze_reader(args.maze)
     path = shortest_path(maze, args.starting, args.goal)
     print(path)
-    """
