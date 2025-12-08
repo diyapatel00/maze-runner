@@ -206,16 +206,15 @@ def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int
     return movements
 
 def find_orientation(start: tuple[int, int], index: tuple[int, int], maze: list[list[str]]) -> list[str]:
-    """
-    Docstring for find_orientation
+    """Return list of orientations of runner when moving through the move.
     
-    :param start: Description
+    :param start: Start position of the runner
     :type start: tuple[int, int]
-    :param index: Description
+    :param index: End position of the runner, a.k.a. goal
     :type index: tuple[int, int]
-    :param maze: Description
+    :param maze: Maze for runner to move through
     :type maze: list[list[str]]
-    :return: Description
+    :return: List of orientations at each position of the runner when exploring maze
     :rtype: list[str]
     """
     orientations = []
@@ -233,34 +232,3 @@ def find_orientation(start: tuple[int, int], index: tuple[int, int], maze: list[
 
 
     return orientations
-
-# testing explore function
-
-"""maze = create_maze(11, 5)
-maze = add_horizontal_wall(maze, 0, 1)
-maze = add_horizontal_wall(maze, 1, 1)
-maze = add_horizontal_wall(maze, 2, 1)
-maze = add_vertical_wall(maze, 1, 3)
-maze = add_vertical_wall(maze, 2, 3)
-maze = add_vertical_wall(maze, 3, 3)
-maze = add_horizontal_wall(maze, 3, 4)
-maze = add_vertical_wall(maze, 3, 4)
-maze = add_vertical_wall(maze, 2, 4)
-maze = add_horizontal_wall(maze, 4, 4)
-maze = add_horizontal_wall(maze, 5, 4)
-maze = add_horizontal_wall(maze, 6, 4)
-maze = add_horizontal_wall(maze, 7, 4)
-maze[7][15] = "X"
-runner = create_runner(0, 0, "N")
-maze[get_y(runner)][get_x(runner)] = "^"
-#output_maze(maze)
-#print(explore(runner, maze, goal = (7, 3))) 
-#print(find_orientation((0, 0), (7, 3), maze))"""
-
-"""maze = create_maze(11, 5)
-maze = add_horizontal_wall(maze, 0, 1)
-maze = add_vertical_wall(maze, 1, 1)
-output_maze(maze)
-print(explore((0,0,"N"), maze, (9,4)))
-output_maze(maze)
-print(find_orientation((0,0), (9,4), maze))"""
