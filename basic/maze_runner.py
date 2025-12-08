@@ -63,20 +63,21 @@ def maze_reader(maze_file: str) -> list[list[str]]:
     except Exception:
         raise IOError("Problem reading from input file")
     
-    # Check external walls fully enclose maze
+    # Check top and bottom walls of maze same length - other length errors will be caught when adding walls
     if len(maze_file[0]) != len(maze_file[len(maze_file) - 1]):
         raise ValueError("Content of file does not form proper maze")
 
+    # Check surrounded walls of file enclosed with "#"
+    for i in range(len(file_maze[0])):
+        if (file_maze[0][i] != "#") or (file_maze[len(file_maze) - 1][i] != "#"):
+            raise ValueError("Content of file does not form proper maze")
+    
+    for i in range(len(file_maze)):
+        if (file_maze[i][0] != "#") or (file_maze[i][len(file_maze[0]) - 1]) != "#":
+            raise ValueError("Content of file does not form proper maze")
 
     # Create basic structure of maze (before adding any internal walls)
-    maze = [["."] * len(file_maze[0]) for _ in range(len(file_maze))]
-    for i in range(len(file_maze[0])):
-        maze[0][i] = "#"
-        maze[len(file_maze) - 1][i] = "#"
-
-    for i in range(len(file_maze)):
-        maze[i][0] = "#"
-        maze[i][len(file_maze[0]) - 1] = "#"
+    maze = create_maze(int((len(file_maze[0]) - 1) / 2), int((len(file_maze) - 1) / 2))
 
     try:
         # Add walls where '#' are
@@ -94,10 +95,10 @@ def maze_reader(maze_file: str) -> list[list[str]]:
                 if file_maze[i][j] == "#":
                     if (j % 2 == 0) and (i % 2 == 1):
                         # is a vertical wall
-                        maze[i][j] = "|"
+                        maze = add_vertical_wall(maze, int((i - 1) / 2), int(j / 2))
                     else:
                         # is a horizontal wall
-                        maze[i][j] = "_"
+                        maze = add_horizontal_wall(maze, int((j - 1) / 2), int((i / 2)))
     except Exception:
         raise ValueError("Content of file does not form proper maze")
 
