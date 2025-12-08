@@ -52,3 +52,56 @@ def shortest_path(maze: list[list[str]], starting: tuple[int, int] = None, goal:
     return explore(start_position, maze, goal)
                 
 
+def maze_reader(maze_file: str) -> list[list[str]]:
+    file_maze = []
+    maze = []
+
+    try:
+        with open(maze_file, "r") as f:
+            for line in f.readlines():
+                file_maze.append(line.strip())
+    except Exception:
+        raise IOError("Problem reading from input file")
+    
+    # Check external walls fully enclose maze
+    if len(maze_file[0]) != len(maze_file[len(maze_file) - 1]):
+        raise ValueError("Content of file does not form proper maze")
+
+
+    # Create basic structure of maze (before adding any internal walls)
+    maze = [["."] * len(file_maze[0]) for _ in range(len(file_maze))]
+    for i in range(len(file_maze[0])):
+        maze[0][i] = "#"
+        maze[len(file_maze) - 1][i] = "#"
+
+    for i in range(len(file_maze)):
+        maze[i][0] = "#"
+        maze[i][len(file_maze[0]) - 1] = "#"
+
+    try:
+        # Add walls where '#' are
+        for i in range(1, len(file_maze) - 1):
+            for j in range(1, len(file_maze[0]) - 1):
+                if (i % 2 == 0) and (j % 2 == 0):
+                    # Check that intersection has "#"
+                    if file_maze[i][j] != "#":
+                        raise Exception
+                    else:
+                        # Can ignore this index if "#" present
+                        continue
+                    
+                # check if index at is a wall
+                if file_maze[i][j] == "#":
+                    if (j % 2 == 0) and (i % 2 == 1):
+                        # is a vertical wall
+                        maze[i][j] = "|"
+                    else:
+                        # is a horizontal wall
+                        maze[i][j] = "_"
+    except Exception:
+        raise ValueError("Content of file does not form proper maze")
+
+    return list(reversed(maze))
+
+output_maze(maze_reader("test-maze-reader.mz"))
+
