@@ -1,5 +1,5 @@
 """Module for creating and updating the runner, alongside allowin the runner to move and explore the maze."""
-
+from maze import * # REMOVE AFTER TESTING
 
 def create_runner(x: int = 0, y: int = 0, orientation: str = "N") -> tuple[int, int, str]:
     """Return a runner given multiple input values relating to co-ordinates and starting orientation.
@@ -119,7 +119,7 @@ def sense_walls(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[bo
         if maze[y][x+1] == "|" or maze[y][x+1] == "#":
             left_wall = True
         if maze[y-1][x] == "_" or maze[y-1][x] == "#":
-            front_wall == True
+            front_wall = True
         if maze[y][x-1] == "|" or maze[y][x-1] == "#":
             right_wall = True
     else: # orientation == "W"
@@ -130,7 +130,6 @@ def sense_walls(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[bo
         if maze[y+1][x] == "_" or maze[y+1][x] == "#":
             right_wall = True
     return (left_wall, front_wall, right_wall)
- 
 
 def go_straight(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[int, int, str]:
     """Return a function call to forward() to return updated runner, to return the updated runner after checking if there is a wall in front of runner.
@@ -227,15 +226,17 @@ def find_orientation(start: tuple[int, int], index: tuple[int, int], maze: list[
         movement = move(position, maze)
         position = movement[0]
         orientations.append(position[2])
+        maze[2 * position[1] + 1][2 * position[0] + 1] = "Y"
 
         if (get_x(position), get_y(position)) == index:
             at_index = True
 
+
     return orientations
 
 # testing explore function
-from maze import *
-maze = create_maze(11, 5)
+
+"""maze = create_maze(11, 5)
 maze = add_horizontal_wall(maze, 0, 1)
 maze = add_horizontal_wall(maze, 1, 1)
 maze = add_horizontal_wall(maze, 2, 1)
@@ -254,4 +255,4 @@ runner = create_runner(0, 0, "N")
 maze[get_y(runner)][get_x(runner)] = "^"
 #output_maze(maze)
 #print(explore(runner, maze, goal = (7, 3)))
-#print(find_orientation((0, 0), (7, 3), maze))
+#print(find_orientation((0, 0), (7, 3), maze))"""
