@@ -34,7 +34,7 @@ def test_shortest_path() -> None:
     maze = create_maze(11, 5)
     maze = add_horizontal_wall(maze, 0, 1)
     maze = add_vertical_wall(maze, 1, 1)
-    path = shortest_path(maze)
+    path = shortest_path(maze, goal = (10, 4))
     assert path[0] == (0, 0, "RF")
     assert path[-1] == (9, 4, "F")
     prefix = []

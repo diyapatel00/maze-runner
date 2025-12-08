@@ -200,7 +200,7 @@ def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int
             found_goal = True
 
         #maze[get_y(runner)][get_x(runner)] = "Y"
-        #output_maze(maze)
+        
         #print(runner)
 
     return movements
@@ -254,5 +254,13 @@ maze[7][15] = "X"
 runner = create_runner(0, 0, "N")
 maze[get_y(runner)][get_x(runner)] = "^"
 #output_maze(maze)
-#print(explore(runner, maze, goal = (7, 3)))
+#print(explore(runner, maze, goal = (7, 3))) 
 #print(find_orientation((0, 0), (7, 3), maze))"""
+
+"""maze = create_maze(11, 5)
+maze = add_horizontal_wall(maze, 0, 1)
+maze = add_vertical_wall(maze, 1, 1)
+output_maze(maze)
+print(explore((0,0,"N"), maze, (9,4)))
+output_maze(maze)
+print(find_orientation((0,0), (9,4), maze))"""
