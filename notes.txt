@@ -5,3 +5,4 @@ things to do:
 - remove unnecessary comments and testing lines
 - add comments to unintuitive lines
 - docstring for find orientation function (rename function and variable names?)
+- docstring for maze_reader

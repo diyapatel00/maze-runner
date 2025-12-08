@@ -185,6 +185,9 @@ def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int
     movements = []
     found_goal = False
 
+    if goal == None:
+        goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
+
     #print(goal_index)
     #print((get_y(runner), get_x(runner)))
     
@@ -205,8 +208,25 @@ def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int
 
     return movements
 
+maze = create_maze(11, 5)
+maze = add_horizontal_wall(maze, 0, 1)
+maze = add_horizontal_wall(maze, 1, 1)
+maze = add_horizontal_wall(maze, 2, 1)
+maze = add_vertical_wall(maze, 1, 3)
+maze = add_vertical_wall(maze, 2, 3)
+maze = add_vertical_wall(maze, 3, 3)
+maze = add_horizontal_wall(maze, 3, 4)
+maze = add_vertical_wall(maze, 3, 4)
+maze = add_vertical_wall(maze, 2, 4)
+maze = add_horizontal_wall(maze, 4, 4)
+maze = add_horizontal_wall(maze, 5, 4)
+maze = add_horizontal_wall(maze, 6, 4)
+maze = add_horizontal_wall(maze, 7, 4)
+runner = create_runner(0, 0, "N")
+#output_maze(maze)
+#print(explore(runner, maze))
 
-def find_orientation(start: tuple[int, int], index: tuple[int, int], maze: list[list[str]]) -> list[str]:
+def find_orientation(maze: list[list[str]], start: tuple[int, int] = (0, 0), index: tuple[int, int] = None) -> list[str]:
     """Return list of orientations of runner when moving through the move.
     
     :param start: Start position of the runner
@@ -218,18 +238,34 @@ def find_orientation(start: tuple[int, int], index: tuple[int, int], maze: list[
     :return: List of orientations at each position of the runner when exploring maze
     :rtype: list[str]
     """
+    if index == None:
+        index = (int(len(maze[0]) - 3) / 2, int(len(maze) - 3) / 2)
+    
+    #print(start)
+
     orientations = []
     at_index = False
     position = (start[0], start[1], "N")
+    #count = 0
+
 
     while not at_index:
+        #print(f"iteration {count}")
         movement = move(position, maze)
+        #print(movement)
         position = movement[0]
         orientations.append(position[2])
         maze[2 * position[1] + 1][2 * position[0] + 1] = "Y"
+        #print(f"goal is: {index}")
+        #print(f"current index is: {(get_x(position), get_y(position))}")
+        #output_maze(maze)
+
 
         if (get_x(position), get_y(position)) == index:
             at_index = True
 
+        #count += 1
 
     return orientations
+
+#print(find_orientation(maze))
