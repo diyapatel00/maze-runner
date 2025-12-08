@@ -205,6 +205,7 @@ def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int
 
     return movements
 
+
 def find_orientation(start: tuple[int, int], index: tuple[int, int], maze: list[list[str]]) -> list[str]:
     """Return list of orientations of runner when moving through the move.
     
