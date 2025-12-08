@@ -7,13 +7,13 @@ from maze import *
 def shortest_path(maze: list[list[str]], starting: tuple[int, int] = None, goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
     """Return the sequence of runner co-ordinates and movements for the shortest path between given starting position and goal
     
-    :param maze: Description
+    :param maze: Current version of the maze to find path from
     :type maze: list[list[str]]
-    :param starting: Description
+    :param starting: Starting position to find shortest path from
     :type starting: tuple[int, int]
-    :param goal: Description
+    :param goal: Ending position to find shortest path to
     :type goal: tuple[int, int]
-    :return: Description
+    :return: List of movements to get from start to goal in minimal steps
     :rtype: list[tuple[int, int, str]]
     """
     if starting == None:
