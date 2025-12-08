@@ -23,32 +23,29 @@ def shortest_path(maze: list[list[str]], starting: tuple[int, int] = None, goal:
 
     start_position = (start_index[0], start_index[1], "N")
     #print(start_position)
-    
-    
-    if goal == None:
-        goal_index = (len(maze[0]) - 2, len(maze) - 2)
-    else:
-        goal_index = (2 * goal[0] + 1, 2 * goal[1] + 1)
 
     #print(goal)
     #print(goal_index)
 
-    movements = explore(start_position, maze, goal)
-    print(movements)
-
     visited = set()
-    shortest_path = []
+    minimal_path = []
+    minimal_path_found = False
     
-    
-    while goal not in visited:
-        for i, move in enumerate(movements):
-            index_at = (move[0], move[1])
-            if move[2] == "B":
-                start_index = (movements[i-1][0], movements[i-1][1])
-                shortest_path.extend(movements[:i+1])
-                movements = explore((start_index[0], start_index[1], "N"), maze, goal)
-                break
-        print(movements)
+    #while not minimal_path_found:
+        #movements = explore(start_position, maze, goal)
+    movements = explore(start_position, maze, goal) 
+    for move in movements:
+        minimal_path_found = True
+        if move[2] == "B":
+            print(get_orientation(runner))
+            #if runner[2] == ""
+            #minimal_path_found = False
+            #break
+            # if no "B" in movements then for loop stops, minimal path found
+
+    #return explore(start_position, maze, goal)
+                
+
 
 # for testing shortest path
 from maze import *
