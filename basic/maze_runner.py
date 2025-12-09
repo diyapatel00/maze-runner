@@ -141,11 +141,13 @@ def output_shortest_path_maze(path: list[tuple[int, int, str]],
                               maze: list[list[str]]):
     """Return display of maze with shortest path shown.
 
+    Runner represented with "@"
+    
     :param path: Shortest path found
     :param maze: Maze path is found from
     """
     for move in path:
-        maze[2 * move[1] + 1][2 * move[0] + 1] = "Y"
+        maze[2 * move[1] + 1][2 * move[0] + 1] = "@"
     return output_maze(maze)
 
 
@@ -172,6 +174,8 @@ if __name__ == "__main__":
                           maze,
                           convert_to_tuple(args.goal))
     path = shortest_path(maze, args.starting, args.goal)
+
+    output_shortest_path_maze(path, maze)
 
     # Storing log of exploration into "exploration.csv"
     with open("exploration.csv", "w") as e:
