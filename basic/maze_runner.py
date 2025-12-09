@@ -1,9 +1,8 @@
 """Module for finding the shortest path between the runner start and the end goal"""
 
-import argparse # for command line inputs
-import csv # for writing csv data
+import argparse
+import csv
 
-# Import functions from other modules
 from runner import *
 from maze import *
 

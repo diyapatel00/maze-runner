@@ -1,14 +1,16 @@
-"""Module for creating and updating the runner, alongside allowin the runner to move and explore the maze."""
-from maze import * # REMOVE AFTER TESTING?
+"""Module for creating, updating runner and exploring maze."""
 
-def create_runner(x: int = 0, y: int = 0, orientation: str = "N") -> tuple[int, int, str]:
-    """Return a runner given multiple input values relating to co-ordinates and starting orientation.
-    
-    :param x: Starting x-coordinate of the runner, defaults to 0
+
+def create_runner(x: int = 0,
+                  y: int = 0,
+                  orientation: str = "N") -> tuple[int, int, str]:
+    """Return a runner given multiple input values with given start position.
+
+    :param x: Starting x-coordinate of runner, defaults to 0
     :type x: int
-    :param y: Starting y-coordinate of the runner, defaults to 0
+    :param y: Starting y-coordinate of runner, defaults to 0
     :type y: int
-    :param orientation: DescripStarting orientation (North, East, South, West) of the runner, defaults to 'N'tion
+    :param orientation: Start orientation of runner, defaults to 'N'
     :type orientation: str
     :return: Starting position of the runner
     :rtype: tuple[int, int, str]
@@ -18,7 +20,7 @@ def create_runner(x: int = 0, y: int = 0, orientation: str = "N") -> tuple[int, 
 
 def get_x(runner: tuple[int, int, str]) -> int:
     """Return the current x-coordinate of the actual maze list of the runner.
-    
+
     :param runner: DescripCurrent position of the runnertion
     :type runner: tuple[int, int, str]
     :return: Current x-coordinate of the runner
@@ -29,7 +31,7 @@ def get_x(runner: tuple[int, int, str]) -> int:
 
 def get_y(runner: tuple[int, int, str]) -> int:
     """Return the current y-coordinate of the actual maze list of the runner.
-    
+
     :param runner: Current position of the runner
     :type runner: tuple[int, int, str]
     :return: Current y-coordinate of the runner
@@ -39,8 +41,8 @@ def get_y(runner: tuple[int, int, str]) -> int:
 
 
 def get_orientation(runner: tuple[int, int, str]) -> str:
-    """Return the current orientation of the runner, either North, East, South, West.
-    
+    """Return the current orientation of the runner.
+
     :param runner: Current position of the runner
     :type runner: tuple[int, int, str]
     :return: Current orientation of the runner, either "N", "E", "S", "W"
@@ -50,8 +52,8 @@ def get_orientation(runner: tuple[int, int, str]) -> str:
 
 
 def turn(runner: tuple[int, int, str], direction: str) -> tuple[int, int, str]:
-    """Return updated runner after turning in the given direction
-    
+    """Return updated runner after turning in the given direction.
+
     :param runner: Current position and orientation of the runner
     :type runner: tuple[int, int, str]
     :param direction: Direction for runner to turn in
@@ -70,7 +72,7 @@ def turn(runner: tuple[int, int, str], direction: str) -> tuple[int, int, str]:
 
 def forward(runner: tuple[int, int, str]) -> tuple[int, int, str]:
     """Return the updated runner after moving forward by 1 index.
-    
+
     :param runner: Current position of the runner
     :type runner: tuple[int, int, str]
     :return: Updated version of runner, after moving forward
@@ -86,14 +88,15 @@ def forward(runner: tuple[int, int, str]) -> tuple[int, int, str]:
         return (runner[0] - 1, runner[1], runner[2])
 
 
-def sense_walls(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[bool, bool, bool]:
-    """Return whether there are walls to the left, right and in front of the current runner.
-    
+def sense_walls(runner: tuple[int, int, str],
+                maze: list[list[str]]) -> tuple[bool, bool, bool]:
+    """Return whether there are walls around the current runner.
+
     :param runner: Current position and orientation of runner
     :type runner: tuple[int, int, str]
     :param maze: Current version of maze
     :type maze: list[list[str]]
-    :return: If there are walls around the runner 
+    :return: If there are walls around the runner
     :rtype: tuple[bool, bool, bool]
     """
     x = 2 * get_x(runner) + 1
@@ -122,7 +125,7 @@ def sense_walls(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[bo
             front_wall = True
         if maze[y][x-1] == "|" or maze[y][x-1] == "#":
             right_wall = True
-    else: # orientation == "W"
+    else:  # orientation == "W"
         if maze[y-1][x] == "_" or maze[y-1][x] == "#":
             left_wall = True
         if maze[y][x-1] == "|" or maze[y][x-1] == "#":
@@ -132,10 +135,11 @@ def sense_walls(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[bo
     return (left_wall, front_wall, right_wall)
 
 
-def go_straight(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[int, int, str]:
-    """Return a function call to forward() to return updated runner, to return the updated runner after checking if there is a wall in front of runner.
-    
-    :param runner: Current position and orientation of runner 
+def go_straight(runner: tuple[int, int, str],
+                maze: list[list[str]]) -> tuple[int, int, str]:
+    """Return a function call to updated runner after moving forward.
+
+    :param runner: Current position and orientation of runner
     :type runner: tuple[int, int, str]
     :param maze: Current version of maze
     :type maze: list[list[str]]
@@ -149,9 +153,10 @@ def go_straight(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[in
         return forward(runner)
 
 
-def move(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[tuple[int, int, str], str]:
+def move(runner: tuple[int, int, str],
+         maze: list[list[str]]) -> tuple[tuple[int, int, str], str]:
     """Return updated runner and sequence of movements made.
-    
+
     :param runner: Current position and orientation of runner
     :type runner: tuple[int, int, str]
     :param maze: Current version of maze
@@ -160,7 +165,7 @@ def move(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[tuple[int
     :rtype: tuple[tuple[int, int, str], str]
     """
     walls = sense_walls(runner, maze)
-    
+
     if not walls[0]:
         return (forward(turn(runner, "Left")), "LF")
     elif not walls[1]:
@@ -171,9 +176,11 @@ def move(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[tuple[int
         return (forward(turn(turn(runner, "Right"), "Right")), "B")
 
 
-def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
+def explore(runner: tuple[int, int, str],
+            maze: list[list[str]],
+            goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
     """Return sequence of movements made for the runner to reach goal given.
-    
+
     :param runner: Starting position and orientation of runner
     :type runner: tuple[int, int, str]
     :param maze: Maze for runner to move through
@@ -186,23 +193,12 @@ def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int
     movements = []
     found_goal = False
 
-    if goal == None:
+    if goal is None:
         goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
-    #print(type(goal))
-    #print(runner)
-    #print(goal_index)
-    #print((get_y(runner), get_x(runner)))
-    #count = 0
 
-    #maze[2 * goal[1] + 1][2 * goal[0] + 1] = "X"
-    
     while not found_goal:
-        #maze[2 * get_y(runner) + 1][2 * get_x(runner) + 1] = "Y"
-        #output_maze(maze)
         runner_position = (runner[0], runner[1])
-        #print(sense_walls(runner, maze))
         movement = move(runner, maze)
-        #print(movement)
         movements.append((runner_position[0], runner_position[1], movement[1]))
         runner = movement[0]
 
@@ -210,70 +206,36 @@ def explore(runner: tuple[int, int, str], maze: list[list[str]], goal: tuple[int
         if (get_x(runner), get_y(runner)) == goal:
             found_goal = True
 
-        #count += 1
-        
-        #print(runner)
-
     return movements
 
-maze = create_maze(11, 5)
-maze = add_horizontal_wall(maze, 0, 1)
-maze = add_horizontal_wall(maze, 1, 1)
-maze = add_horizontal_wall(maze, 2, 1)
-maze = add_vertical_wall(maze, 1, 3)
-maze = add_vertical_wall(maze, 2, 3)
-maze = add_vertical_wall(maze, 3, 3)
-maze = add_horizontal_wall(maze, 3, 4)
-maze = add_vertical_wall(maze, 3, 4)
-maze = add_vertical_wall(maze, 2, 4)
-maze = add_horizontal_wall(maze, 4, 4)
-maze = add_horizontal_wall(maze, 5, 4)
-maze = add_horizontal_wall(maze, 6, 4)
-maze = add_horizontal_wall(maze, 7, 4)
-runner = create_runner(0, 0, "N")
-#output_maze(maze)
-#print(explore(runner, maze))
 
-def find_orientation(maze: list[list[str]], start: tuple[int, int] = (0, 0), index: tuple[int, int] = None) -> list[str]:
+def find_orientation(maze: list[list[str]],
+                     start: tuple[int, int] = (0, 0),
+                     index: tuple[int, int] = None) -> list[str]:
     """Return list of orientations of runner when moving through the move.
-    
+
     :param start: Start position of the runner
     :type start: tuple[int, int]
     :param index: End position of the runner, a.k.a. goal
     :type index: tuple[int, int]
     :param maze: Maze for runner to move through
     :type maze: list[list[str]]
-    :return: List of orientations at each position of the runner when exploring maze
+    :return: List of orientations of runner when exploring maze
     :rtype: list[str]
     """
-    if index == None:
+    if index is None:
         index = (int(len(maze[0]) - 3) / 2, int(len(maze) - 3) / 2)
-    
-    #print(start)
 
     orientations = []
     at_index = False
     position = (start[0], start[1], "N")
-    #count = 0
-
 
     while not at_index:
-        #print(f"iteration {count}")
         movement = move(position, maze)
-        #print(movement)
         position = movement[0]
         orientations.append(position[2])
-        #maze[2 * position[1] + 1][2 * position[0] + 1] = "Y"
-        #print(f"goal is: {index}")
-        #print(f"current index is: {(get_x(position), get_y(position))}")
-        #output_maze(maze)
-
 
         if (get_x(position), get_y(position)) == index:
             at_index = True
 
-        #count += 1
-
     return orientations
-
-#print(find_orientation(maze))
