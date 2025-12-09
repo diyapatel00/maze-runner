@@ -27,7 +27,9 @@ def create_maze(width: int = 5, height: int = 5) -> list[list[str]]:
     return maze
 
 
-def add_horizontal_wall(maze: list[list[str]], x_coordinate: int, horizontal_line: int) -> list[list[str]]:
+def add_horizontal_wall(maze: list[list[str]],
+                        x_coordinate: int,
+                        horizontal_line: int) -> list[list[str]]:
     """Return updated maze after adding horizontal wall to coordinates given.
 
     :param maze: Current version of maze
@@ -43,7 +45,9 @@ def add_horizontal_wall(maze: list[list[str]], x_coordinate: int, horizontal_lin
     return maze
 
 
-def add_vertical_wall(maze: list[list[str]], y_coordinate: int, vertical_line: int) -> list[list[str]]:
+def add_vertical_wall(maze: list[list[str]],
+                      y_coordinate: int,
+                      vertical_line: int) -> list[list[str]]:
     """Return updated maze after adding vertical wall to coordinates given.
 
     :param maze: Current version of the maze
@@ -70,7 +74,9 @@ def get_dimensions(maze: list[list[str]]) -> tuple[int, int]:
     return int(maze_width), int(maze_length)
 
 
-def get_walls(maze: list[list[str]], x_coordinate: int, y_coordinate: int) -> tuple[bool, bool, bool, bool]:
+def get_walls(maze: list[list[str]],
+              x_coordinate: int,
+              y_coordinate: int) -> tuple[bool, bool, bool, bool]:
     """Return whether there are walls around a given coordinate.
 
     :param maze: Current version of the maze
