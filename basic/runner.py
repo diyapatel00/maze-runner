@@ -1,5 +1,5 @@
 """Module for creating and updating the runner, alongside allowin the runner to move and explore the maze."""
-from maze import * # REMOVE AFTER TESTING
+from maze import * # REMOVE AFTER TESTING?
 
 def create_runner(x: int = 0, y: int = 0, orientation: str = "N") -> tuple[int, int, str]:
     """Return a runner given multiple input values relating to co-ordinates and starting orientation.
@@ -130,6 +130,7 @@ def sense_walls(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[bo
         if maze[y+1][x] == "_" or maze[y+1][x] == "#":
             right_wall = True
     return (left_wall, front_wall, right_wall)
+
 
 def go_straight(runner: tuple[int, int, str], maze: list[list[str]]) -> tuple[int, int, str]:
     """Return a function call to forward() to return updated runner, to return the updated runner after checking if there is a wall in front of runner.

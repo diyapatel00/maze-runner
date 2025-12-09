@@ -93,7 +93,7 @@ def maze_reader(maze_file: str) -> list[list[str]]:
             raise ValueError("Content of file does not form proper maze")
 
     # Create basic structure of maze (before adding any internal walls)
-    maze = create_maze(int((len(file_maze[0]) - 1) / 2), int((len(file_maze) - 1) / 2))
+    maze = create_maze(int(round((len(file_maze[0])) - 1) / 2), int(round((len(file_maze) - 1) / 2)))
 
     try:
         # Add walls where '#' are
@@ -120,7 +120,7 @@ def maze_reader(maze_file: str) -> list[list[str]]:
 
     return list(reversed(maze))
 
-#output_maze(maze_reader("test-maze-reader.mz"))
+output_maze(maze_reader("test-maze-reader.mz"))
 
 def convert_to_tuple(values: str) -> tuple[int, int]:
     """DOCSTRING"""

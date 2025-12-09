@@ -13,12 +13,12 @@ __status__ = "Prototype"
 
 import pytest
 
-from basic import maze # type: ignore
-#from basic import maze_reader
-
+from basic.maze import *
+from basic.maze_runner import *
 
 def test_maze_reader_maze1() -> None:
     maze = maze_reader("maze1.mz")
+    output_maze(maze)
     assert get_dimensions(maze) == (2, 1)
     assert get_walls(maze, 0, 0) == (True, False, True, True)
     assert get_walls(maze, 1, 0) == (True, True, True, False)

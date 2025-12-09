@@ -1,7 +1,7 @@
 things to do:
 - change docstring formatting to include separate line for type
 - docstring for shortest_path function
-- check formatting of all code with some plugin
+- check formatting of all code with some plugin (somewhere in lecture slides)
 - remove unnecessary comments and testing lines
 - add comments to unintuitive lines
 - docstring for find orientation function (rename function and variable names?)
