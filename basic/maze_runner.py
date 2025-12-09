@@ -1,14 +1,14 @@
 """Module for finding the shortest path between the runner start and the end goal"""
 
-import argparse
-import csv
+import argparse # for command line inputs
+import csv # for writing csv data
 
-# can only use the explore function to gain information about the maze
+# Import functions from other modules
 from runner import *
 from maze import *
 
 def shortest_path(maze: list[list[str]], starting: tuple[int, int] = None, goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
-    """Return the sequence of runner co-ordinates and movements for the shortest path between given starting position and goal
+    """Return the sequence of runner co-ordinates and movements for the shortest path between given starting position and goal.
     
     :param maze: Current version of the maze to find path from
     :type maze: list[list[str]]
