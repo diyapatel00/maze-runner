@@ -1,6 +1,7 @@
 """Module for finding the shortest path between the runner start and the end goal"""
 
 import argparse
+import csv
 
 # can only use the explore function to gain information about the maze
 from runner import *
@@ -28,8 +29,8 @@ def shortest_path(maze: list[list[str]], starting: tuple[int, int] = None, goal:
 
     start_position = (starting[0], starting[1], "N")
     minimal_path_found = False
-    output_maze(maze)
-    count = 0
+    #output_maze(maze)
+    #count = 0
     
     while not minimal_path_found:
         orientations = find_orientation(maze, starting, goal)
@@ -55,7 +56,7 @@ def shortest_path(maze: list[list[str]], starting: tuple[int, int] = None, goal:
                 break
             visited.add((move[0], move[1]))
         
-    output_maze(maze)
+    #output_maze(maze)
 
     return explore(start_position, maze, goal)
 
@@ -93,7 +94,7 @@ def maze_reader(maze_file: str) -> list[list[str]]:
             raise ValueError("Content of file does not form proper maze")
 
     # Create basic structure of maze (before adding any internal walls)
-    maze = create_maze(int(round((len(file_maze[0])) - 1) / 2), int(round((len(file_maze) - 1) / 2)))
+    maze = create_maze(int((len(file_maze[0]) - 1) / 2), int((len(file_maze) - 1) / 2))
 
     try:
         # Add walls where '#' are
@@ -120,14 +121,28 @@ def maze_reader(maze_file: str) -> list[list[str]]:
 
     return list(reversed(maze))
 
-output_maze(maze_reader("test-maze-reader.mz"))
+#output_maze(maze_reader("test-maze-reader.mz"))
 
-def convert_to_tuple(values: str) -> tuple[int, int]:
+def convert_to_tuple(values: str = None) -> tuple[int, int]:
     """DOCSTRING"""
+    if values == None:
+        return (0, 0)
+    
     split = values.split(",")
     return (int(split[0]), int(split[1]))
 
-#print(convert_to_tuple("0, 1"))
+#print(convert_to_tuple("0,0")
+
+def output_shortest_path_maze(path: list[tuple[int, int, str]], maze: list[list[str]]):
+    """
+    Docstring for output_shortest_path_maze
+    
+    :param path: Description
+    :param maze: Description
+    """
+    for move in path:
+        maze[2 * move[1] + 1][2 * move[0] + 1] = "Y"
+    return output_maze(maze)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="ECS Maze Runner")
@@ -138,6 +153,25 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    start_x, start_y = convert_to_tuple(args.starting)
+
     maze = maze_reader(args.maze)
+
+    exploration = explore((start_x, start_y, "N"), maze, convert_to_tuple(args.goal))
     path = shortest_path(maze, args.starting, args.goal)
-    print(path)
+    #print(output_shortest_path_maze(path, maze))
+
+    # Storing log of exploration into "exploration.csv"
+    with open("exploration.csv", "w") as e:
+        exploration_writer = csv.writer(e)
+        exploration_writer.writerow(["Step", "x-coordinate", "y-coordinate", "Actions"])
+        for step, move in enumerate(exploration):
+            exploration_writer.writerow([step + 1, move[0], move[1], move[2]])
+
+    # Storing statistics
+    with open("statistics.txt", "w") as s:
+        s.write(f"Maze: {args.maze}\n")
+        s.write(f"Score: {len(exploration) / 4 + len(path)}\n")
+        s.write(f"No. of steps for exploration: {len(exploration)}\n")
+        s.write(f"Shortest path: {path}\n")
+        s.write(f"Length of shortest path: {len(path)}\n")
