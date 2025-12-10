@@ -98,12 +98,17 @@ def output_shortest_path_maze(path: list[tuple[int, int, str]],
     return output_maze(maze)
 
 
-def shortest_path(adjacent, start, goal):
+def shortest_path(adjacent, maze, start, goal):
+    if goal is None:
+        goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
+
     path = [goal] 
     position = goal
     runner = (start[0], start[1], "N")
+    #print(adjacent)
 
     while position != start:
+        #print(position)
         path.append(adjacent[position])
         position = adjacent[position]
 
@@ -149,8 +154,20 @@ if __name__ == "__main__":
     exploration = explore(maze,
                           (starting[0], starting[1]),
                           goal)
-    path = shortest_path(exploration, starting, goal)
+    print(exploration)
+    path = shortest_path(exploration, maze, starting, goal)
     #print(path)
+
+    explore_moves = []
+    runner = (starting[0], starting[1], "N")
+    exploration_list = [(s, e) for e, s in exploration.items()]
+    for step in range(len(exploration)):
+        move_made, runner = movement(runner, exploration_list[step][0], exploration_list[step][1])
+        explore_moves.append(move_made)
+
+    #print(explore_moves)
+
+    #print(len(exploration), len(explore_moves))
 
     #output_shortest_path_maze(path, maze)
 
@@ -163,7 +180,7 @@ if __name__ == "__main__":
                                      "Actions"])
         runner = (starting[0], starting[1], "N")
         exploration_list = [(s, e) for e, s in exploration.items()]
-        print(exploration_list)
+        #print(exploration_list)
         for step in range(len(exploration)):
             move_made, runner = movement(runner, exploration_list[step][0], exploration_list[step][1])
             exploration_writer.writerow([step + 1, move_made[0], move_made[1], move_made[2]])
