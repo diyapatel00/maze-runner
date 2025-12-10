@@ -176,37 +176,35 @@ def move(runner: tuple[int, int, str],
         return (forward(turn(turn(runner, "Right"), "Right")), "B")
 
 
-def explore(runner: tuple[int, int, str],
-            maze: list[list[str]],
-            goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
-    """Return sequence of movements made for the runner to reach goal given.
-
-    :param runner: Starting position and orientation of runner
-    :type runner: tuple[int, int, str]
-    :param maze: Maze for runner to move through
-    :type maze: list[list[str]]
-    :param goal: Co-ordinates for the runner to 'find', default to None
-    :type goal: tuple[int, int]
-    :return: List of movements made from start of runner to reaching goal
-    :rtype: list[tuple[int, int, str]]
-    """
-    movements = []
-    found_goal = False
-
+def explore(maze: list[list[str]], start: tuple[int, int], goal: tuple[int, int] = None) -> list[list[str]]:
     if goal is None:
         goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
+    
+    print(goal)
+    output_maze(maze)
+    maze[2 * goal[1] + 1][2 * goal[0] + 1] = "X"
+    visiting_queue = [start]
+    visited = {start}
+    adjacent = {}
 
-    while not found_goal:
-        runner_position = (runner[0], runner[1])
-        movement = move(runner, maze)
-        movements.append((runner_position[0], runner_position[1], movement[1]))
-        runner = movement[0]
+    while len(visiting_queue) > 0:
+        (x, y) = visiting_queue.pop()
+        #maze[2 * y + 1][2 * x + 1] = "@"
+        #output_maze(maze)
+        is_walls = get_walls(maze, x, y)
+        #print(is_walls)
 
-        # Check if goal has been reached
-        if (get_x(runner), get_y(runner)) == goal:
-            found_goal = True
+        if (x, y) == goal:
+            return adjacent
 
-    return movements
+        for i, (nx, ny) in enumerate([(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]):
+            if (nx, ny) not in visited and not is_walls[i] and (nx, ny) != "#":
+                visited.add((nx, ny))
+                adjacent[(nx, ny)] = (x, y)
+                visiting_queue.append((nx, ny))
+
+    return -1
+
 
 
 def find_orientation(maze: list[list[str]],
@@ -241,7 +239,36 @@ def find_orientation(maze: list[list[str]],
     return orientations
 
 
-def movement(runner, start, end):
+def actions(runner, move_orient):
+    curr_orient = get_orientation(runner)
 
-    
-    return move
+    n_moves = {"N": "F", "E": "RF", "S": "B", "W": "LF"}
+    e_moves = {"N": "LF", "E": "F", "S": "RF", "W": "B"}
+    s_moves = {"N": "B", "E": "LF", "S": "F", "W": "RF"}
+    w_moves = {"N": "RF", "E": "B", "S": "LF", "W": "F"}
+
+    if curr_orient == "N":
+        return n_moves[move_orient]
+    elif curr_orient == "E":
+        return e_moves[move_orient]
+    elif curr_orient == "S":
+        return s_moves[move_orient]
+    else:  # curr_orient == "W"
+        return w_moves[move_orient]
+
+
+def movement(runner, start, end):
+    if end == (start[0], start[1] + 1):  # Moving North
+        move = (start[0], start[1], actions(runner, "N"))
+        runner = (end[0], end[1], "N")
+    elif end == (start[0] + 1, start[1]):  # Moving East
+        move = (start[0], start[1], actions(runner, "E"))
+        runner = (end[0], end[1], "E")
+    elif end == (start[0], start[1] - 1):  # Moving South
+        move = (start[0], start[1], actions(runner, "S"))
+        runner = (end[0], end[1], "S")
+    else:  # Moving West
+        move = (start[0], start[1], actions(runner, "W"))
+        runner = (end[0], end[1], "W")
+
+    return move, runner
