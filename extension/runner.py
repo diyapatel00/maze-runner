@@ -239,3 +239,9 @@ def find_orientation(maze: list[list[str]],
             at_index = True
 
     return orientations
+
+
+def movement(runner, start, end):
+
+    
+    return move

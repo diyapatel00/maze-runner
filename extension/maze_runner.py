@@ -128,14 +128,22 @@ def shortest_path(maze: list[list[str]], start: tuple[int, int], goal: tuple[int
 def return_actual_shortest_path(adjacent, start, goal):
     path = [goal] 
     position = goal
+    runner = (start[0], start[1], "N")
 
     while position != start:
         path.append(adjacent[position])
         position = adjacent[position]
 
-    return list(reversed(path))
-
+    shortest_path = list(reversed(path))
+    movements = []
+    print(shortest_path)
     
+    for i in range(len(shortest_path) - 1):
+        movements.append(movement(runner, start, end))
+
+    return movements
+
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="ECS Maze Runner")
@@ -168,6 +176,7 @@ if __name__ == "__main__":
                           maze,
                           goal)
     path = shortest_path(maze, starting, goal)
+    print(path)
 
     output_shortest_path_maze(path, maze)
 
