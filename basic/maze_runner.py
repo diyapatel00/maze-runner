@@ -21,13 +21,6 @@ def shortest_path(maze: list[list[str]],
     :return: List of movements to get from start to goal in minimal steps
     :rtype: list[tuple[int, int, str]]
     """
-    if starting is not None:
-        starting = convert_to_tuple(starting)
-    else:
-        starting = (0, 0)
-
-    if goal is not None:
-        goal = convert_to_tuple(goal)
 
     start_position = (starting[0], starting[1], "N")
     minimal_path_found = False
@@ -166,14 +159,22 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    start_x, start_y = convert_to_tuple(args.starting)
+    if args.starting is not None:
+        starting = convert_to_tuple(args.starting)
+    else:
+        starting = (0, 0)
+    
+    if args.goal is not None:
+        goal = convert_to_tuple(args.goal)
+    else:
+        goal = args.goal
 
     maze = maze_reader(args.maze)
 
-    exploration = explore((start_x, start_y, "N"),
+    exploration = explore((starting[0], starting[1], "N"),
                           maze,
-                          convert_to_tuple(args.goal))
-    path = shortest_path(maze, args.starting, args.goal)
+                          goal)
+    path = shortest_path(maze, starting, goal)
 
     output_shortest_path_maze(path, maze)
 

@@ -7,57 +7,6 @@ from runner import *
 from maze import *
 
 
-def shortest_path(maze: list[list[str]],
-                  starting: tuple[int, int] = None,
-                  goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
-    """Return the sequence of moves of shortest path between start and goal.
-
-    :param maze: Current version of the maze to find path from
-    :type maze: list[list[str]]
-    :param starting: Starting position to find shortest path from
-    :type starting: tuple[int, int]
-    :param goal: Ending position to find shortest path to
-    :type goal: tuple[int, int]
-    :return: List of movements to get from start to goal in minimal steps
-    :rtype: list[tuple[int, int, str]]
-    """
-    if starting is not None:
-        starting = convert_to_tuple(starting)
-    else:
-        starting = (0, 0)
-
-    if goal is not None:
-        goal = convert_to_tuple(goal)
-    ## else goal will be converted in explore
-
-    start_position = (starting[0], starting[1], "N")
-    minimal_path_found = False
-
-    while not minimal_path_found:
-        orientations = find_orientation(maze, starting, goal)
-        movements = explore(start_position, maze, goal)
-        visited = set()
-
-        for i, move in enumerate(movements):
-            minimal_path_found = True
-            if move[2] == "B" or (move[0], move[1]) in visited:
-                curr_orient = orientations[i]
-                if curr_orient == "N":
-                    add_horizontal_wall(maze, move[0], move[1] + 1)
-                elif curr_orient == "S":
-                    add_horizontal_wall(maze, move[0], move[1])
-                elif curr_orient == "E":
-                    add_vertical_wall(maze, move[1], move[0] + 1)
-                else:
-                    add_vertical_wall(maze, move[1], move[0])
-                minimal_path_found = False
-                break
-
-            visited.add((move[0], move[1]))
-
-    return explore(start_position, maze, goal)
-
-
 def maze_reader(maze_file: str) -> list[list[str]]:
     """Return usable maze from given file.
 
@@ -149,16 +98,9 @@ def output_shortest_path_maze(path: list[tuple[int, int, str]],
     return output_maze(maze)
 
 
-def actual_shortest_path(maze: list[list[str]], start: tuple[int, int] = None, goal: tuple[int, int] = None) -> list[list[str]]:
-    if start is None:
-        start = (0, 0)
-    else:
-        start = convert_to_tuple(start)
-    
+def shortest_path(maze: list[list[str]], start: tuple[int, int], goal: tuple[int, int] = None) -> list[list[str]]:
     if goal is None:
         goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
-    else:
-        goal = convert_to_tuple(goal)
     
     maze[2 * goal[1] + 1][2 * goal[0] + 1] = "X"
     visiting_queue = [start]
@@ -190,7 +132,7 @@ def return_actual_shortest_path(adjacent, start, goal):
     while position != start:
         path.append(adjacent[position])
         position = adjacent[position]
-    print(path)
+
     return list(reversed(path))
 
     
@@ -212,16 +154,24 @@ if __name__ == "__main__":
 
     maze = maze_reader(args.maze)
 
-    print(actual_shortest_path(maze, args.starting, args.goal))
+    if args.starting is not None:
+        starting = convert_to_tuple(args.starting)
+    else:
+        starting = (0, 0)
+    
+    if args.goal is not None:
+        goal = convert_to_tuple(args.goal)
+    else:
+        goal = args.goal
 
-    #exploration = explore((start_x, start_y, "N"),
-    #                      maze,
-    #                      convert_to_tuple(args.goal))
-    #path = shortest_path(maze, args.starting, args.goal)
+    exploration = explore((starting[0], starting[1], "N"),
+                          maze,
+                          goal)
+    path = shortest_path(maze, starting, goal)
 
-    #output_shortest_path_maze(path, maze)
+    output_shortest_path_maze(path, maze)
 
-    """# Storing log of exploration into "exploration.csv"
+    # Storing log of exploration into "exploration.csv"
     with open("exploration.csv", "w") as e:
         exploration_writer = csv.writer(e)
         exploration_writer.writerow(["Step",
@@ -237,4 +187,4 @@ if __name__ == "__main__":
         s.write(f"Score: {len(exploration) / 4 + len(path)}\n")
         s.write(f"No. of steps for exploration: {len(exploration)}\n")
         s.write(f"Shortest path: {path}\n")
-        s.write(f"Length of shortest path: {len(path)}\n")"""
+        s.write(f"Length of shortest path: {len(path)}\n")
