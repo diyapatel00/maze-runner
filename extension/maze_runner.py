@@ -98,10 +98,35 @@ def output_shortest_path_maze(path: list[tuple[int, int, str]],
     return output_maze(maze)
 
 
-def shortest_path(adjacent, maze, start, goal):
+def shortest_path(maze: list[list[str]], start: tuple[int, int], goal: tuple[int, int] = None) -> list[list[str]]:
     if goal is None:
         goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
+    
+    maze[2 * goal[1] + 1][2 * goal[0] + 1] = "X"
+    visiting_queue = [start]
+    visited = {start}
+    adjacent = {}
 
+    while len(visiting_queue) > 0:
+        (x, y) = visiting_queue.pop()
+        #maze[2 * y + 1][2 * x + 1] = "@"
+        #output_maze(maze)
+        is_walls = get_walls(maze, x, y)
+        #print(is_walls)
+
+        if (x, y) == goal:
+            return return_actual_shortest_path(adjacent, start, goal)
+
+        for i, (nx, ny) in enumerate([(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]):
+            if (nx, ny) not in visited and not is_walls[i] and (nx, ny) != "#":
+                visited.add((nx, ny))
+                adjacent[(nx, ny)] = (x, y)
+                visiting_queue.append((nx, ny))
+
+    return -1
+
+
+def return_actual_shortest_path(adjacent, start, goal):
     path = [goal] 
     position = goal
     runner = (start[0], start[1], "N")
@@ -120,8 +145,8 @@ def shortest_path(adjacent, maze, start, goal):
         move, runner = movement(runner, shortest_path[i], shortest_path[i + 1])
         movements.append(move)
 
-    return movements
 
+    return movements
 
 
 if __name__ == "__main__":
@@ -151,19 +176,15 @@ if __name__ == "__main__":
     else:
         goal = args.goal
 
-    exploration, explore_count = explore(maze,
-                          (starting[0], starting[1]),
+    exploration = explore((starting[0], starting[1], "N"),
+                          maze,
                           goal)
-    print(explore_count)
-    path = shortest_path(exploration, maze, starting, goal)
+    print(exploration)
+    path = shortest_path(maze, starting, goal)
     #print(path)
 
     explore_moves = []
     runner = (starting[0], starting[1], "N")
-    exploration_list = [(s, e) for e, s in exploration.items()]
-    for step in range(len(exploration)):
-        move_made, runner = movement(runner, exploration_list[step][0], exploration_list[step][1])
-        explore_moves.append(move_made)
 
     #print(explore_moves)
 
@@ -179,10 +200,7 @@ if __name__ == "__main__":
                                      "y-coordinate",
                                      "Actions"])
         runner = (starting[0], starting[1], "N")
-        exploration_list = [(s, e) for e, s in exploration.items()]
-        #print(exploration_list)
-        for step in range(len(exploration)):
-            move_made, runner = movement(runner, exploration_list[step][0], exploration_list[step][1])
+        for step, move_made in enumerate(exploration):
             exploration_writer.writerow([step + 1, move_made[0], move_made[1], move_made[2]])
 
     # Storing statistics into "statistics.txt"

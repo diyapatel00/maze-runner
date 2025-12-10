@@ -1,5 +1,10 @@
 """Module for creating, updating runner and exploring maze."""
+
+import math
+
+
 from maze import *
+
 
 def create_runner(x: int = 0,
                   y: int = 0,
@@ -176,40 +181,37 @@ def move(runner: tuple[int, int, str],
         return (forward(turn(turn(runner, "Right"), "Right")), "B")
 
 
-def explore(maze: list[list[str]], start: tuple[int, int], goal: tuple[int, int] = None) -> list[list[str]]:
+def explore(runner: tuple[int, int, str],
+            maze: list[list[str]],
+            goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
+    """Return sequence of movements made for the runner to reach goal given.
+
+    :param runner: Starting position and orientation of runner
+    :type runner: tuple[int, int, str]
+    :param maze: Maze for runner to move through
+    :type maze: list[list[str]]
+    :param goal: Co-ordinates for the runner to 'find', default to None
+    :type goal: tuple[int, int]
+    :return: List of movements made from start of runner to reaching goal
+    :rtype: list[tuple[int, int, str]]
+    """
+    movements = []
+    found_goal = False
+
     if goal is None:
         goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
-    
-    #print(goal)
-    #output_maze(maze)
-    maze[2 * goal[1] + 1][2 * goal[0] + 1] = "X"
-    visiting_queue = [start]
-    visited = {start}
-    adjacent = {}
-    count = 0
 
-    while len(visiting_queue) > 0:
-        (x, y) = visiting_queue.pop()
-        #maze[2 * y + 1][2 * x + 1] = "@"
-        #output_maze(maze)
-        is_walls = get_walls(maze, x, y)
-        #print(is_walls)
-        #print(is_walls)
-        count = 0
+    while not found_goal:
+        runner_position = (runner[0], runner[1])
+        movement = move(runner, maze)
+        movements.append((runner_position[0], runner_position[1], movement[1]))
+        runner = movement[0]
 
-        if (x, y) == goal:
-            return adjacent, len(visited)
+        # Check if goal has been reached
+        if (get_x(runner), get_y(runner)) == goal:
+            found_goal = True
 
-        for i, (nx, ny) in enumerate([(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]):
-            #print(adjacent)
-            if (nx, ny) not in visited and not is_walls[i] and (nx, ny) != "#" and count < 1:
-                visited.add((nx, ny))
-                adjacent[(nx, ny)] = (x, y)
-                visiting_queue.append((nx, ny))
-            print(visiting_queue)
-
-    return -1
-
+    return movements
 
 
 def find_orientation(maze: list[list[str]],
