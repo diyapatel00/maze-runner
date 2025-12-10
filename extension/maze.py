@@ -94,16 +94,16 @@ def get_walls(maze: list[list[str]],
     array_x = x_coordinate * 2 + 1
     array_y = y_coordinate * 2 + 1
 
-    if maze[array_y + 1][array_x] == "_":
+    if maze[array_y + 1][array_x] == "_" or maze[array_y + 1][array_x] == "#":
         n_wall = True
 
-    if maze[array_y][array_x + 1] == "|":
+    if maze[array_y][array_x + 1] == "|" or maze[array_y][array_x + 1] == "#":
         e_wall = True
 
-    if maze[array_y - 1][array_x] == "_":
+    if maze[array_y - 1][array_x] == "_" or maze[array_y - 1][array_x] == "#":
         s_wall = True
 
-    if maze[array_y][array_x - 1] == "|":
+    if maze[array_y][array_x - 1] == "|" or maze[array_y][array_x - 1] == "#":
         w_wall = True
 
     return (n_wall, e_wall, s_wall, w_wall)

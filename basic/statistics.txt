@@ -1,5 +1,5 @@
 Maze: test-maze-reader.mz
-Score: 6.5
-No. of steps for exploration: 10
-Shortest path: [(0, 0, 'F'), (0, 1, 'F'), (0, 2, 'RF'), (1, 2, 'RF')]
-Length of shortest path: 4
+Score: 41.5
+No. of steps for exploration: 98
+Shortest path: [(0, 0, 'F'), (0, 1, 'RF'), (1, 1, 'RF'), (1, 0, 'LF'), (2, 0, 'F'), (3, 0, 'F'), (4, 0, 'F'), (5, 0, 'LF'), (5, 1, 'F'), (5, 2, 'F'), (5, 3, 'LF'), (4, 3, 'RF'), (4, 4, 'RF'), (5, 4, 'F'), (6, 4, 'F'), (7, 4, 'F'), (8, 4, 'F')]
+Length of shortest path: 17

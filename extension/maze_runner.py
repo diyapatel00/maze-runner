@@ -28,6 +28,7 @@ def shortest_path(maze: list[list[str]],
 
     if goal is not None:
         goal = convert_to_tuple(goal)
+    ## else goal will be converted in explore
 
     start_position = (starting[0], starting[1], "N")
     minimal_path_found = False
@@ -130,9 +131,6 @@ def convert_to_tuple(values: str = None) -> tuple[int, int]:
     :return: Tuple created from entered values
     :rtype: tuple[int, int]
     """
-    if values is None:
-        return (0, 0)
-
     split = values.split(",")
     return (int(split[0]), int(split[1]))
 
@@ -151,6 +149,51 @@ def output_shortest_path_maze(path: list[tuple[int, int, str]],
     return output_maze(maze)
 
 
+def actual_shortest_path(maze: list[list[str]], start: tuple[int, int] = None, goal: tuple[int, int] = None) -> list[list[str]]:
+    if start is None:
+        start = (0, 0)
+    else:
+        start = convert_to_tuple(start)
+    
+    if goal is None:
+        goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
+    else:
+        goal = convert_to_tuple(goal)
+    
+    maze[2 * goal[1] + 1][2 * goal[0] + 1] = "X"
+    visiting_queue = [start]
+    visited = {start}
+    adjacent = {}
+
+    (x, y) = visiting_queue.pop()
+    maze[2 * y + 1][2 * x + 1] = "@"
+    output_maze(maze)
+    is_walls = get_walls(maze, x, y)
+    print(is_walls)
+
+    if (x, y) == goal:
+        return return_actual_shortest_path(adjacent, start, goal)
+
+    for i, (nx, ny) in enumerate([(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]):
+        if (nx, ny) not in visited and not is_walls[i] and (nx, ny) != "#":
+            visited.add((nx, ny))
+            adjacent[(nx, ny)] = (x, y)
+            visiting_queue.append((nx, ny))
+
+    return -1
+
+def return_actual_shortest_path(adjacent, start, goal):
+    path = [goal]
+    position = goal
+
+    while position != start:
+        path.append(adjacent[position])
+        position = [n for n, c in adjacent.items() if c == position]
+
+    return path.reverse()
+
+    
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="ECS Maze Runner")
 
@@ -166,18 +209,18 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    start_x, start_y = convert_to_tuple(args.starting)
-
     maze = maze_reader(args.maze)
 
-    exploration = explore((start_x, start_y, "N"),
-                          maze,
-                          convert_to_tuple(args.goal))
-    path = shortest_path(maze, args.starting, args.goal)
+    print(actual_shortest_path(maze, args.starting, args.goal))
 
-    output_shortest_path_maze(path, maze)
+    #exploration = explore((start_x, start_y, "N"),
+    #                      maze,
+    #                      convert_to_tuple(args.goal))
+    #path = shortest_path(maze, args.starting, args.goal)
 
-    # Storing log of exploration into "exploration.csv"
+    #output_shortest_path_maze(path, maze)
+
+    """# Storing log of exploration into "exploration.csv"
     with open("exploration.csv", "w") as e:
         exploration_writer = csv.writer(e)
         exploration_writer.writerow(["Step",
@@ -193,4 +236,4 @@ if __name__ == "__main__":
         s.write(f"Score: {len(exploration) / 4 + len(path)}\n")
         s.write(f"No. of steps for exploration: {len(exploration)}\n")
         s.write(f"Shortest path: {path}\n")
-        s.write(f"Length of shortest path: {len(path)}\n")
+        s.write(f"Length of shortest path: {len(path)}\n")"""
