@@ -186,6 +186,7 @@ def explore(maze: list[list[str]], start: tuple[int, int], goal: tuple[int, int]
     visiting_queue = [start]
     visited = {start}
     adjacent = {}
+    count = 0
 
     while len(visiting_queue) > 0:
         (x, y) = visiting_queue.pop()
@@ -194,16 +195,18 @@ def explore(maze: list[list[str]], start: tuple[int, int], goal: tuple[int, int]
         is_walls = get_walls(maze, x, y)
         #print(is_walls)
         #print(is_walls)
+        count = 0
 
         if (x, y) == goal:
-            return adjacent
+            return adjacent, len(visited)
 
         for i, (nx, ny) in enumerate([(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]):
             #print(adjacent)
-            if (nx, ny) not in visited and not is_walls[i] and (nx, ny) != "#":
+            if (nx, ny) not in visited and not is_walls[i] and (nx, ny) != "#" and count < 1:
                 visited.add((nx, ny))
                 adjacent[(nx, ny)] = (x, y)
                 visiting_queue.append((nx, ny))
+            print(visiting_queue)
 
     return -1
 

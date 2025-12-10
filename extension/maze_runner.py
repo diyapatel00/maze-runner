@@ -151,10 +151,10 @@ if __name__ == "__main__":
     else:
         goal = args.goal
 
-    exploration = explore(maze,
+    exploration, explore_count = explore(maze,
                           (starting[0], starting[1]),
                           goal)
-    print(exploration)
+    print(explore_count)
     path = shortest_path(exploration, maze, starting, goal)
     #print(path)
 
