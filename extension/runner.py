@@ -246,7 +246,16 @@ def find_orientation(maze: list[list[str]],
     return orientations
 
 
-def actions(runner, move_orient):
+def actions(runner: tuple[int, int, str], move_orient: str) -> str:
+    """Return movement action made to move in given direction.
+
+    :param runner: Current runner before move
+    :type runner: tuple[int, int, str]
+    :param move_orient: Direction to move in
+    :type move_orient: str
+    :return: Action taken to move in direction
+    :rtype: str
+    """
     curr_orient = get_orientation(runner)
 
     n_moves = {"N": "F", "E": "RF", "S": "B", "W": "LF"}
@@ -264,7 +273,22 @@ def actions(runner, move_orient):
         return w_moves[move_orient]
 
 
-def movement(runner, start, end):
+def movement(runner: tuple[int, int, str],
+             start: tuple[int, int],
+             end: tuple[int, int]) -> tuple[int, int, str]:
+    """Return runner and move made between two points.
+
+    'start' and 'end' are adjacent coordinates
+
+    :param runner: Current runner before movement
+    :type runner: tuple[int, int, str]
+    :param start: Coordinate to move from
+    :type start: tuple[int, int]
+    :param end: Coordinate to move to
+    :type end: tuple[int, int]
+    :return: Move made and updated runner
+    :rtype: tuple[int, int, str]
+    """
     if end == (start[0], start[1] + 1):  # Moving North
         move = (start[0], start[1], actions(runner, "N"))
         runner = (end[0], end[1], "N")

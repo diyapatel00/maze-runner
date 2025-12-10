@@ -21,7 +21,6 @@ def shortest_path(maze: list[list[str]],
     :return: List of movements to get from start to goal in minimal steps
     :rtype: list[tuple[int, int, str]]
     """
-
     start_position = (starting[0], starting[1], "N")
     minimal_path_found = False
 
@@ -135,7 +134,7 @@ def output_shortest_path_maze(path: list[tuple[int, int, str]],
     """Return display of maze with shortest path shown.
 
     Runner represented with "@"
-    
+
     :param path: Shortest path found
     :param maze: Maze path is found from
     """
@@ -163,7 +162,7 @@ if __name__ == "__main__":
         starting = convert_to_tuple(args.starting)
     else:
         starting = (0, 0)
-    
+
     if args.goal is not None:
         goal = convert_to_tuple(args.goal)
     else:

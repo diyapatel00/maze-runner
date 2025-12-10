@@ -89,7 +89,7 @@ def output_shortest_path_maze(path: list[tuple[int, int, str]],
     """Return display of maze with shortest path shown.
 
     Runner represented with "@"
-    
+
     :param path: Shortest path found
     :param maze: Maze path is found from
     """
@@ -98,53 +98,89 @@ def output_shortest_path_maze(path: list[tuple[int, int, str]],
     return output_maze(maze)
 
 
-def shortest_path(maze: list[list[str]], start: tuple[int, int], goal: tuple[int, int] = None) -> list[list[str]]:
+def shortest_path(maze: list[list[str]],
+                  start: tuple[int, int],
+                  goal: tuple[int, int] = None) -> list[list[str]]:
+    """Return the shortest path using BFS.
+
+    Breadth-First Search used to visit all nodes in maze, noting neighbours
+
+    :param maze: Maze for runner to find path in
+    :type maze: list[list[str]]
+    :param start: Start coordinates of runner
+    :type start: tuple[int, int]
+    :param goal: Aim of runner
+    :type goal: tuple[int, int]
+    :return: Shortest path
+    :rtype: list[list[str]]
+    """
     if goal is None:
         goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
-    
-    maze[2 * goal[1] + 1][2 * goal[0] + 1] = "X"
+
+    # Create queue to view connections from
     visiting_queue = [start]
+    # Set to prevent visiting coordinates multiple times
     visited = {start}
+    # Dictionary to store adjacent coordinates as pairs
     adjacent = {}
 
+    # Keep finding connections until goal reached, or queue empty
     while len(visiting_queue) > 0:
+        # Visit next coordinate pair in queue
         (x, y) = visiting_queue.pop()
-        #maze[2 * y + 1][2 * x + 1] = "@"
-        #output_maze(maze)
         is_walls = get_walls(maze, x, y)
-        #print(is_walls)
 
         if (x, y) == goal:
             return return_actual_shortest_path(adjacent, start, goal)
 
-        for i, (nx, ny) in enumerate([(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]):
-            if (nx, ny) not in visited and not is_walls[i] and (nx, ny) != "#":
+        # Iterate through 4 neighbours of current coordinates
+        for i, (nx, ny) in enumerate([(x, y + 1),
+                                      (x + 1, y),
+                                      (x, y - 1),
+                                      (x - 1, y)]):
+            # Check neighbouring node not visited and not blocked by wall
+            if (nx, ny) not in visited and not is_walls[i]:
                 visited.add((nx, ny))
                 adjacent[(nx, ny)] = (x, y)
                 visiting_queue.append((nx, ny))
 
+    # Return -1 if program fails to find goal
     return -1
 
 
-def return_actual_shortest_path(adjacent, start, goal):
-    path = [goal] 
+def return_actual_shortest_path(adjacent: dict,
+                                start: tuple[int, int],
+                                goal: tuple[int, int]) -> list[tuple[int,
+                                                                     int,
+                                                                     str]]:
+    """Return the shortest path from start to goal.
+
+    :param adjacent: All adjacent coordinates
+    :type adjacent: dict
+    :param start: Start position of runner
+    :type start: tuple[int, int]
+    :param goal: Goal for runner
+    :type goal: tuple[int, int]
+    :return: List of movements made along path
+    :rtype: list[tuple[int, int, str]]
+    """
+    # Start from goal and work backwards to find start
+    path = [goal]
     position = goal
     runner = (start[0], start[1], "N")
-    #print(adjacent)
 
     while position != start:
-        #print(position)
         path.append(adjacent[position])
         position = adjacent[position]
 
+    # Reverse path found, to find from start to goal
     shortest_path = list(reversed(path))
     movements = []
-    #print(shortest_path)
-    
+
+    # Add movements to path, e.g. "LF"
     for i in range(len(shortest_path) - 1):
         move, runner = movement(runner, shortest_path[i], shortest_path[i + 1])
         movements.append(move)
-
 
     return movements
 
@@ -170,7 +206,7 @@ if __name__ == "__main__":
         starting = convert_to_tuple(args.starting)
     else:
         starting = (0, 0)
-    
+
     if args.goal is not None:
         goal = convert_to_tuple(args.goal)
     else:
@@ -179,18 +215,12 @@ if __name__ == "__main__":
     exploration = explore((starting[0], starting[1], "N"),
                           maze,
                           goal)
-    print(exploration)
     path = shortest_path(maze, starting, goal)
-    #print(path)
+
+    output_shortest_path_maze(path, maze)
 
     explore_moves = []
     runner = (starting[0], starting[1], "N")
-
-    #print(explore_moves)
-
-    #print(len(exploration), len(explore_moves))
-
-    #output_shortest_path_maze(path, maze)
 
     # Storing log of exploration into "exploration.csv"
     with open("exploration.csv", "w") as e:
@@ -201,7 +231,10 @@ if __name__ == "__main__":
                                      "Actions"])
         runner = (starting[0], starting[1], "N")
         for step, move_made in enumerate(exploration):
-            exploration_writer.writerow([step + 1, move_made[0], move_made[1], move_made[2]])
+            exploration_writer.writerow([step + 1,
+                                         move_made[0],
+                                         move_made[1],
+                                         move_made[2]])
 
     # Storing statistics into "statistics.txt"
     with open("statistics.txt", "w") as s:

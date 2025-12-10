@@ -1,6 +1,7 @@
 """Module for creating, updating runner and exploring maze."""
 from maze import *
 
+
 def create_runner(x: int = 0,
                   y: int = 0,
                   orientation: str = "N") -> tuple[int, int, str]:
