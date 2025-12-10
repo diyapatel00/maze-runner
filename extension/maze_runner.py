@@ -165,32 +165,33 @@ def actual_shortest_path(maze: list[list[str]], start: tuple[int, int] = None, g
     visited = {start}
     adjacent = {}
 
-    (x, y) = visiting_queue.pop()
-    maze[2 * y + 1][2 * x + 1] = "@"
-    output_maze(maze)
-    is_walls = get_walls(maze, x, y)
-    print(is_walls)
+    while len(visiting_queue) > 0:
+        (x, y) = visiting_queue.pop()
+        #maze[2 * y + 1][2 * x + 1] = "@"
+        #output_maze(maze)
+        is_walls = get_walls(maze, x, y)
+        #print(is_walls)
 
-    if (x, y) == goal:
-        return return_actual_shortest_path(adjacent, start, goal)
+        if (x, y) == goal:
+            return return_actual_shortest_path(adjacent, start, goal)
 
-    for i, (nx, ny) in enumerate([(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]):
-        if (nx, ny) not in visited and not is_walls[i] and (nx, ny) != "#":
-            visited.add((nx, ny))
-            adjacent[(nx, ny)] = (x, y)
-            visiting_queue.append((nx, ny))
+        for i, (nx, ny) in enumerate([(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]):
+            if (nx, ny) not in visited and not is_walls[i] and (nx, ny) != "#":
+                visited.add((nx, ny))
+                adjacent[(nx, ny)] = (x, y)
+                visiting_queue.append((nx, ny))
 
     return -1
 
 def return_actual_shortest_path(adjacent, start, goal):
-    path = [goal]
+    path = [goal] 
     position = goal
 
     while position != start:
         path.append(adjacent[position])
-        position = [n for n, c in adjacent.items() if c == position]
-
-    return path.reverse()
+        position = adjacent[position]
+    print(path)
+    return list(reversed(path))
 
     
 
