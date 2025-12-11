@@ -192,7 +192,7 @@ def explore(maze: list[list[str]],
     movements = []
 
     while len(visit_queue) > 0:
-        # Chooses the position to visit based on minimal estimated distance
+        # Chooses the position to visit based on minimal g-score
         current = min(h_add_d)
 
         x, y = current
@@ -209,26 +209,35 @@ def explore(maze: list[list[str]],
                                       (x - 1, y)]):
             if ((nx, ny) not in visited and not is_walls[i] and
                nx >= 0 and ny >= 0):
-                if (nx, ny) not in h_add_d:
-                    total_dist[(nx, ny)] = math.inf
-
                 curr_dist = total_dist[current] + 1
+
+                # Check distance is lower than assessed distance
+                # or that distance hasn't been found
                 if ((nx, ny) not in total_dist or
                    curr_dist < total_dist[(nx, ny)]):
+                    # Calculate next g-score
                     next = curr_dist + heuristic((nx, ny), goal)
                     h_add_d[(nx, ny)] = next
+                    # Add pair to neighbouring coordinates
                     adjacent[(nx, ny)] = current
                     total_dist[(nx, ny)] = curr_dist
+                    # Find movement made between neighbours
                     move, runner = movement(runner, (x, y), (nx, ny))
                     movements.append(move)
+
+                # Add neihbour to queue, so is yet to be visited
                 visit_queue.add((nx, ny))
                 visited.add((nx, ny))
 
             else:
                 continue
+        # Ensure current isn't visited again
         visited.add(current)
+        # To prevent same position being revisited due to lowest
+        # g-score
         h_add_d.pop(current)
 
+    # Return -1 if goal not found (input error likely)
     return -1
 
 
