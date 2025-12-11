@@ -1,1 +1,0 @@
-Maze: test-maze-reader.mz

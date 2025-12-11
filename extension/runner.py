@@ -224,14 +224,14 @@ def explore_a_star(maze, runner, goal = None):
 
     visit_queue = {goal}
     visited = set()  # set
-    count = 0
+    #count = 0
 
     movements = []
 
     while len(visit_queue) > 0:
-        print(f"heuristics are: {h_add_d}")
+        #print(f"heuristics are: {h_add_d}")
         current = min(h_add_d)
-        print(f"current node: {current}")
+        #print(f"current node: {current}")
 
         x, y = current
         is_walls = get_walls(maze, x, y)
@@ -239,10 +239,10 @@ def explore_a_star(maze, runner, goal = None):
         if current == goal:
             #output_maze(maze)
             print(movements)
-            return movements
+            return movements, adjacent
         
         for i, (nx, ny) in enumerate([(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]):
-            print(f"neighbour is: {(nx, ny)}")
+            #print(f"neighbour is: {(nx, ny)}")
             if (nx, ny) not in visited and not is_walls[i] and nx >= 0 and ny >= 0:
                 if (nx, ny) not in h_add_d:
                     total_dist[(nx, ny)] = math.inf
@@ -262,9 +262,9 @@ def explore_a_star(maze, runner, goal = None):
                 continue
         visited.add(current)
         h_add_d.pop(current)
-        maze[2 * y + 1][2 * x + 1] = count
-        print(f"adjacent: {adjacent}")
-        count += 1
+        #maze[2 * y + 1][2 * x + 1] = count
+        #print(f"adjacent: {adjacent}")
+        #count += 1
 
     return -1
 

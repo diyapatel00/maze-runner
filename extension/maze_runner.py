@@ -148,8 +148,10 @@ def shortest_path(maze: list[list[str]],
     return -1
 
 
+
 def return_actual_shortest_path(adjacent: dict,
                                 start: tuple[int, int],
+                                maze,
                                 goal: tuple[int, int]) -> list[tuple[int,
                                                                      int,
                                                                      str]]:
@@ -164,6 +166,9 @@ def return_actual_shortest_path(adjacent: dict,
     :return: List of movements made along path
     :rtype: list[tuple[int, int, str]]
     """
+    if goal is None:
+        goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
+
     # Start from goal and work backwards to find start
     path = [goal]
     position = goal
@@ -215,16 +220,16 @@ if __name__ == "__main__":
     #exploration = explore((starting[0], starting[1], "N"),
     #                      maze,
     #                      goal)
-    exploration = explore_a_star(maze, (starting[0], starting[1], "N"), goal)
-    path = shortest_path(maze, starting, goal)
-    print(exploration)
-    print(len(exploration))
+    exploration, adjacent = explore_a_star(maze, (starting[0], starting[1], "N"), goal)
+    #path = shortest_path(maze, starting, goal)
+    path = return_actual_shortest_path(adjacent, starting, maze, goal)
+    print(len(path))
     #output_shortest_path_maze(path, maze)
 
     explore_moves = []
     runner = (starting[0], starting[1], "N")
 
-    """# Storing log of exploration into "exploration.csv"
+    # Storing log of exploration into "exploration.csv"
     with open("exploration.csv", "w") as e:
         exploration_writer = csv.writer(e)
         exploration_writer.writerow(["Step",
@@ -245,4 +250,3 @@ if __name__ == "__main__":
         s.write(f"No. of steps for exploration: {len(exploration)}\n")
         s.write(f"Shortest path: {path}\n")
         s.write(f"Length of shortest path: {len(path)}\n")
-"""
