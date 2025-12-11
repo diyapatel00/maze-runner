@@ -143,6 +143,36 @@ def output_shortest_path_maze(path: list[tuple[int, int, str]],
     return output_maze(maze)
 
 
+def validate_coordinates(arg: str, maze: list[list[str]]) -> bool:
+    """Return if formatting of terminal inputs are correct.
+    
+    :param arg: Input to be checked
+    :type arg: str
+    :return: True, False depending on formatting
+    :rtype: bool
+    """
+    strip_arg = arg.strip().split(",")
+
+    # Check to ensure 2 comma-separated parts
+    if len(strip_arg) != 2:
+        return False
+    else:
+        try:
+            # Ensure two integer values are present
+            int(strip_arg[0].strip())
+            int(strip_arg[1].strip())
+
+            # Ensure values within maze dimensions
+            len_x, len_y = get_dimensions(maze)
+            if (int(strip_arg[0].strip()) > len_x or
+                int(strip_arg[1].strip()) > len_y):
+                return False
+
+            return True
+        except ValueError:
+            return False
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="ECS Maze Runner")
 
@@ -157,18 +187,26 @@ if __name__ == "__main__":
                         help="The goal position, e.g., \"4, 5\"")
 
     args = parser.parse_args()
+    maze = maze_reader(args.maze)
 
+    # Check terminal inputs
     if args.starting is not None:
-        starting = convert_to_tuple(args.starting)
+        if validate_coordinates(args.starting, maze):
+            starting = convert_to_tuple(args.starting)
+        else:
+            print("Invalid input.")
+            exit(-1)
     else:
         starting = (0, 0)
 
     if args.goal is not None:
-        goal = convert_to_tuple(args.goal)
+        if validate_coordinates(args.goal, maze):
+            goal = convert_to_tuple(args.goal)
+        else:
+            print("Invalid input")
+            exit(-1)
     else:
         goal = args.goal
-
-    maze = maze_reader(args.maze)
 
     exploration = explore((starting[0], starting[1], "N"),
                           maze,
@@ -185,15 +223,10 @@ if __name__ == "__main__":
         for step, move in enumerate(exploration):
             exploration_writer.writerow([step + 1, move[0], move[1], move[2]])
 
-    # Strip the shortest path of its actions
-    stripped_path = []
-    for move_made in path:
-        stripped_path.append((move_made[0], move_made[1]))
-
     # Storing statistics into "statistics.txt"
     with open("statistics.txt", "w") as s:
         s.write(f"Maze: {args.maze}\n")
         s.write(f"Score: {len(exploration) / 4 + len(path)}\n")
         s.write(f"No. of steps for exploration: {len(exploration)}\n")
-        s.write(f"Shortest path: {stripped_path}\n")
-        s.write(f"Length of shortest path: {len(stripped_path)}\n")
+        s.write(f"Shortest path: {path}\n")
+        s.write(f"Length of shortest path: {len(path)}\n")
