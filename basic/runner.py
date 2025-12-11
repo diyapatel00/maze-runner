@@ -183,7 +183,6 @@ def explore(runner: tuple[int, int, str],
 
         # Check if goal has been reached
         if (get_x(runner), get_y(runner)) == goal:
-            output_maze(maze)
             found_goal = True
 
     return movements

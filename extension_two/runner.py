@@ -181,7 +181,7 @@ def explore(runner: tuple[int, int, str],
     if goal is None:
         goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
 
-    output_maze(maze)
+    #output_maze(maze)
     start = runner[0], runner[1]
 
     movements = [start]
@@ -208,6 +208,7 @@ def explore(runner: tuple[int, int, str],
                     position_queue.append((nx, ny))
             else:
                 continue
+            output_maze(maze)
 
     return -1
 

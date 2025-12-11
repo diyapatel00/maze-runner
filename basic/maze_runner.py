@@ -175,8 +175,6 @@ if __name__ == "__main__":
                           goal)
     path = shortest_path(maze, starting, goal)
 
-    output_shortest_path_maze(path, maze)
-
     # Storing log of exploration into "exploration.csv"
     with open("exploration.csv", "w") as e:
         exploration_writer = csv.writer(e)
@@ -187,10 +185,15 @@ if __name__ == "__main__":
         for step, move in enumerate(exploration):
             exploration_writer.writerow([step + 1, move[0], move[1], move[2]])
 
+    # Strip the shortest path of its actions
+    stripped_path = []
+    for move_made in path:
+        stripped_path.append((move_made[0], move_made[1]))
+
     # Storing statistics into "statistics.txt"
     with open("statistics.txt", "w") as s:
         s.write(f"Maze: {args.maze}\n")
         s.write(f"Score: {len(exploration) / 4 + len(path)}\n")
         s.write(f"No. of steps for exploration: {len(exploration)}\n")
-        s.write(f"Shortest path: {path}\n")
-        s.write(f"Length of shortest path: {len(path)}\n")
+        s.write(f"Shortest path: {stripped_path}\n")
+        s.write(f"Length of shortest path: {len(stripped_path)}\n")

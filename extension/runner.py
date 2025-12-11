@@ -178,24 +178,32 @@ def explore(maze: list[list[str]],
     if goal is None:
         goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
 
+    # To store neighbouring positions:
     adjacent = {(get_x(runner), get_y(runner)): None}
+    # To store total distance between position and start
     total_dist = {(get_x(runner), get_y(runner)): 0}
+    # To store distance from start + heuristic
     h_add_d = {(get_x(runner), get_y(runner)): 0}
 
+    # To store coordinates yet to be visited:
     visit_queue = {goal}
+    # To ensure no coordinate is visited twice
     visited = set()
+    # To store moves runner made
     movements = []
 
     while len(visit_queue) > 0:
+        # Chooses the position to visit based on minimal estimated distance
         current = min(h_add_d)
 
         x, y = current
         is_walls = get_walls(maze, x, y)
 
+        # Can stop exploring if goal is being visited
         if current == goal:
-            print(movements)
             return movements, adjacent
 
+        # Iterate through neighbouring nodes
         for i, (nx, ny) in enumerate([(x, y + 1),
                                       (x + 1, y),
                                       (x, y - 1),

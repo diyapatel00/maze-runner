@@ -98,62 +98,10 @@ def output_shortest_path_maze(path: list[tuple[int, int, str]],
     return output_maze(maze)
 
 
-def shortest_path(maze: list[list[str]],
+def shortest_path(adjacent: dict,
                   start: tuple[int, int],
-                  goal: tuple[int, int] = None) -> list[list[str]]:
-    """Return the shortest path using BFS.
-
-    Breadth-First Search used to visit all nodes in maze, noting neighbours
-
-    :param maze: Maze for runner to find path in
-    :type maze: list[list[str]]
-    :param start: Start coordinates of runner
-    :type start: tuple[int, int]
-    :param goal: Aim of runner
-    :type goal: tuple[int, int]
-    :return: Shortest path
-    :rtype: list[list[str]]
-    """
-    if goal is None:
-        goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
-
-    # Create queue to view connections from
-    visiting_queue = [start]
-    # Set to prevent visiting coordinates multiple times
-    visited = {start}
-    # Dictionary to store adjacent coordinates as pairs
-    adjacent = {}
-
-    # Keep finding connections until goal reached, or queue empty
-    while len(visiting_queue) > 0:
-        # Visit next coordinate pair in queue
-        (x, y) = visiting_queue.pop()
-        is_walls = get_walls(maze, x, y)
-
-        if (x, y) == goal:
-            return return_actual_shortest_path(adjacent, start, goal)
-
-        # Iterate through 4 neighbours of current coordinates
-        for i, (nx, ny) in enumerate([(x, y + 1),
-                                      (x + 1, y),
-                                      (x, y - 1),
-                                      (x - 1, y)]):
-            # Check neighbouring node not visited and not blocked by wall
-            if (nx, ny) not in visited and not is_walls[i]:
-                visited.add((nx, ny))
-                adjacent[(nx, ny)] = (x, y)
-                visiting_queue.append((nx, ny))
-
-    # Return -1 if program fails to find goal
-    return -1
-
-
-def return_actual_shortest_path(adjacent: dict,
-                                start: tuple[int, int],
-                                maze,
-                                goal: tuple[int, int]) -> list[tuple[int,
-                                                                     int,
-                                                                     str]]:
+                  maze: list[list[str]],
+                  goal: tuple[int, int]) -> list[tuple[int, int, str]]:
     """Return the shortest path from start to goal.
 
     :param adjacent: All adjacent coordinates
@@ -184,7 +132,7 @@ def return_actual_shortest_path(adjacent: dict,
     # Add movements to path, e.g. "LF"
     for i in range(len(shortest_path) - 1):
         move, runner = movement(runner, shortest_path[i], shortest_path[i + 1])
-        movements.append(move)
+        movements.append((move[0], move[1], move[2]))
 
     return movements
 
@@ -219,9 +167,7 @@ if __name__ == "__main__":
     exploration, adjacent = explore(maze,
                                     (starting[0], starting[1], "N"),
                                     goal)
-    path = return_actual_shortest_path(adjacent, starting, maze, goal)
-
-    output_shortest_path_maze(path, maze)
+    path = shortest_path(adjacent, starting, maze, goal)
 
     explore_moves = []
     runner = (starting[0], starting[1], "N")
@@ -240,10 +186,15 @@ if __name__ == "__main__":
                                          move_made[1],
                                          move_made[2]])
 
+    # Strip the shortest path of its actions
+    stripped_path = []
+    for move_made in path:
+        stripped_path.append((move_made[0], move_made[1]))
+
     # Storing statistics into "statistics.txt"
     with open("statistics.txt", "w") as s:
         s.write(f"Maze: {args.maze}\n")
         s.write(f"Score: {len(exploration) / 4 + len(path)}\n")
         s.write(f"No. of steps for exploration: {len(exploration)}\n")
-        s.write(f"Shortest path: {path}\n")
-        s.write(f"Length of shortest path: {len(path)}\n")
+        s.write(f"Shortest path: {stripped_path}\n")
+        s.write(f"Length of shortest path: {len(stripped_path)}\n")
