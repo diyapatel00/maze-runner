@@ -186,9 +186,9 @@ def explore(maze: list[list[str]],
 
     # To store coordinates yet to be visited:
     visit_queue = {goal}
-    # To ensure no coordinate is visited twice
+    # To ensure no coordinate is visited twice:
     visited = set()
-    # To store moves runner made
+    # To store moves runner made:
     movements = []
 
     while len(visit_queue) > 0:
@@ -203,6 +203,7 @@ def explore(maze: list[list[str]],
             return movements, adjacent
 
         # Iterate through neighbouring nodes
+        # where (nx, ny) is neighbour of (x, y)
         for i, (nx, ny) in enumerate([(x, y + 1),
                                       (x + 1, y),
                                       (x, y - 1),
@@ -228,13 +229,12 @@ def explore(maze: list[list[str]],
                 # Add neihbour to queue, so is yet to be visited
                 visit_queue.add((nx, ny))
                 visited.add((nx, ny))
-
             else:
                 continue
+
         # Ensure current isn't visited again
         visited.add(current)
-        # To prevent same position being revisited due to lowest
-        # g-score
+        # To prevent same position being revisited due to lowest g-score
         h_add_d.pop(current)
 
     # Return -1 if goal not found (input error likely)

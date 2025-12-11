@@ -181,6 +181,7 @@ if __name__ == "__main__":
                         help="The goal position, e.g., \"4, 5\"")
 
     args = parser.parse_args()
+    
     maze = maze_reader(args.maze)
 
     # Check terminal inputs

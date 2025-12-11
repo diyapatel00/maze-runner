@@ -144,7 +144,7 @@ def validate_coordinates(arg: str, maze: list[list[str]]) -> bool:
             return False
 
 
-def convert_to_tuple(values: str = None) -> tuple[int, int]:
+def convert_to_tuple(values: str) -> tuple[int, int]:
     """Return tuple from given string.
 
     :param values: Values to be converted into tuple form
@@ -152,9 +152,6 @@ def convert_to_tuple(values: str = None) -> tuple[int, int]:
     :return: Tuple created from entered values
     :rtype: tuple[int, int]
     """
-    if values is None:
-        return (0, 0)
-
     split = values.split(",")
     return (int(split[0]), int(split[1]))
 

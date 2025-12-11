@@ -90,7 +90,7 @@ def get_walls(maze: list[list[str]],
     """
     n_wall, e_wall, s_wall, w_wall = False, False, False, False
 
-    # convert given coordinates to array indices
+    # Convert given coordinates to array indices
     array_x = x_coordinate * 2 + 1
     array_y = y_coordinate * 2 + 1
 
