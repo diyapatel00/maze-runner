@@ -104,7 +104,6 @@ def sense_walls(runner: tuple[int, int, str],
     :return: If there are walls around the runner
     :rtype: tuple[bool, bool, bool]
     """
-
     orientation = get_orientation(runner)
     walls = get_walls(maze, get_x(runner), get_y(runner))
 

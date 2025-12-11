@@ -136,7 +136,7 @@ def validate_coordinates(arg: str, maze: list[list[str]]) -> bool:
             # Ensure values within maze dimensions
             len_x, len_y = get_dimensions(maze)
             if (int(strip_arg[0].strip()) > len_x or
-                int(strip_arg[1].strip()) > len_y):
+               int(strip_arg[1].strip()) > len_y):
                 return False
 
             return True
