@@ -181,74 +181,55 @@ def move(runner: tuple[int, int, str],
         return (forward(turn(turn(runner, "Right"), "Right")), "B")
 
 
-def explore(runner: tuple[int, int, str],
-            maze: list[list[str]],
-            goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
-    """Return sequence of movements made for the runner to reach goal given.
+def explore(maze: list[list[str]],
+            runner: tuple[int, int, str],
+            goal: tuple[int, int] = None) -> list[tuple]:
+    """Return movements to explore the maze.
 
-    :param runner: Starting position and orientation of runner
-    :type runner: tuple[int, int, str]
-    :param maze: Maze for runner to move through
+    Uses A* algorithm to find goal in maze.
+
+    :param maze: Maze for runner to explore
     :type maze: list[list[str]]
-    :param goal: Co-ordinates for the runner to 'find', default to None
+    :param runner: Starting position of runner.
+    :type runner: tuple[int, int, str]
+    :param goal: Aim of runner.
     :type goal: tuple[int, int]
-    :return: List of movements made from start of runner to reaching goal
-    :rtype: list[tuple[int, int, str]]
+    :return: Movements taken to explore, adjacent nodes
+    :rtype: list[tuple]
     """
-    movements = []
-    found_goal = False
-
     if goal is None:
         goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
 
-    while not found_goal:
-        runner_position = (runner[0], runner[1])
-        movement = move(runner, maze)
-        movements.append((runner_position[0], runner_position[1], movement[1]))
-        runner = movement[0]
-
-        # Check if goal has been reached
-        if (get_x(runner), get_y(runner)) == goal:
-            found_goal = True
-
-    return movements
-
-def explore_a_star(maze, runner, goal = None):
-    output_maze(maze)
-    if goal is None:
-        goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
-
-    adjacent = {(get_x(runner), get_y(runner)): None}  # dict
-    total_dist = {(get_x(runner), get_y(runner)): 0}  # dict
+    adjacent = {(get_x(runner), get_y(runner)): None}
+    total_dist = {(get_x(runner), get_y(runner)): 0}
     h_add_d = {(get_x(runner), get_y(runner)): 0}
 
     visit_queue = {goal}
-    visited = set()  # set
-    #count = 0
-
+    visited = set()
     movements = []
 
     while len(visit_queue) > 0:
-        #print(f"heuristics are: {h_add_d}")
         current = min(h_add_d)
-        #print(f"current node: {current}")
 
         x, y = current
         is_walls = get_walls(maze, x, y)
 
         if current == goal:
-            #output_maze(maze)
             print(movements)
             return movements, adjacent
-        
-        for i, (nx, ny) in enumerate([(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]):
-            #print(f"neighbour is: {(nx, ny)}")
-            if (nx, ny) not in visited and not is_walls[i] and nx >= 0 and ny >= 0:
+
+        for i, (nx, ny) in enumerate([(x, y + 1),
+                                      (x + 1, y),
+                                      (x, y - 1),
+                                      (x - 1, y)]):
+            if ((nx, ny) not in visited and not is_walls[i] and
+               nx >= 0 and ny >= 0):
                 if (nx, ny) not in h_add_d:
                     total_dist[(nx, ny)] = math.inf
 
                 curr_dist = total_dist[current] + 1
-                if (nx, ny) not in total_dist or curr_dist < total_dist[(nx, ny)]:
+                if ((nx, ny) not in total_dist or
+                   curr_dist < total_dist[(nx, ny)]):
                     next = curr_dist + heuristic((nx, ny), goal)
                     h_add_d[(nx, ny)] = next
                     adjacent[(nx, ny)] = current
@@ -262,23 +243,21 @@ def explore_a_star(maze, runner, goal = None):
                 continue
         visited.add(current)
         h_add_d.pop(current)
-        #maze[2 * y + 1][2 * x + 1] = count
-        #print(f"adjacent: {adjacent}")
-        #count += 1
 
     return -1
 
 
-def heuristic(start, end):
+def heuristic(start: tuple[int, int], end: tuple[int, int]) -> float:
+    """Return Manhattan distance between two points.
+
+    :param start: First point
+    :type start: tuple[int, int]
+    :param end: Second point
+    :type end: tuple[int, int]
+    :return: Total of the absolute value of difference between x and y values
+    :rtype: float
+    """
     return abs(end[1] - start[1]) + abs(end[0] - start[0])
-
-
-"""maze = create_maze(3, 3)
-maze = add_vertical_wall(maze, 1, 1)
-maze = add_vertical_wall(maze, 1, 2)
-maze = add_vertical_wall(maze, 0, 2)
-output_maze(maze)
-print(explore_a_star(maze, (0, 0), (1, 1)))"""
 
 
 def find_orientation(maze: list[list[str]],

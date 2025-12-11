@@ -175,7 +175,7 @@ if __name__ == "__main__":
                           goal)
     path = shortest_path(maze, starting, goal)
 
-    #output_shortest_path_maze(path, maze)
+    output_shortest_path_maze(path, maze)
 
     # Storing log of exploration into "exploration.csv"
     with open("exploration.csv", "w") as e:

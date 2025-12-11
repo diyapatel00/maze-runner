@@ -148,7 +148,6 @@ def shortest_path(maze: list[list[str]],
     return -1
 
 
-
 def return_actual_shortest_path(adjacent: dict,
                                 start: tuple[int, int],
                                 maze,
@@ -217,14 +216,12 @@ if __name__ == "__main__":
     else:
         goal = args.goal
 
-    #exploration = explore((starting[0], starting[1], "N"),
-    #                      maze,
-    #                      goal)
-    exploration, adjacent = explore_a_star(maze, (starting[0], starting[1], "N"), goal)
-    #path = shortest_path(maze, starting, goal)
+    exploration, adjacent = explore(maze,
+                                    (starting[0], starting[1], "N"),
+                                    goal)
     path = return_actual_shortest_path(adjacent, starting, maze, goal)
-    print(len(path))
-    #output_shortest_path_maze(path, maze)
+
+    output_shortest_path_maze(path, maze)
 
     explore_moves = []
     runner = (starting[0], starting[1], "N")
