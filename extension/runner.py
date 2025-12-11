@@ -104,40 +104,18 @@ def sense_walls(runner: tuple[int, int, str],
     :return: If there are walls around the runner
     :rtype: tuple[bool, bool, bool]
     """
-    x = 2 * get_x(runner) + 1
-    y = 2 * get_y(runner) + 1
+
     orientation = get_orientation(runner)
-    left_wall, front_wall, right_wall = False, False, False
+    walls = get_walls(maze, get_x(runner), get_y(runner))
 
     if orientation == "N":
-        if maze[y][x-1] == "|" or maze[y][x-1] == "#":
-            left_wall = True
-        if maze[y+1][x] == "_" or maze[y+1][x] == "#":
-            front_wall = True
-        if maze[y][x+1] == "|" or maze[y][x+1] == "#":
-            right_wall = True
+        return (walls[3], walls[0], walls[1])
     elif orientation == "E":
-        if maze[y+1][x] == "_" or maze[y+1][x] == "#":
-            left_wall = True
-        if maze[y][x+1] == "|" or maze[y][x+1] == "#":
-            front_wall = True
-        if maze[y-1][x] == "_" or maze[y-1][x] == "#":
-            right_wall = True
+        return (walls[0], walls[1], walls[2])
     elif orientation == "S":
-        if maze[y][x+1] == "|" or maze[y][x+1] == "#":
-            left_wall = True
-        if maze[y-1][x] == "_" or maze[y-1][x] == "#":
-            front_wall = True
-        if maze[y][x-1] == "|" or maze[y][x-1] == "#":
-            right_wall = True
+        return (walls[1], walls[2], walls[3])
     else:  # orientation == "W"
-        if maze[y-1][x] == "_" or maze[y-1][x] == "#":
-            left_wall = True
-        if maze[y][x-1] == "|" or maze[y][x-1] == "#":
-            front_wall = True
-        if maze[y+1][x] == "_" or maze[y+1][x] == "#":
-            right_wall = True
-    return (left_wall, front_wall, right_wall)
+        return (walls[2], walls[3], walls[0])
 
 
 def go_straight(runner: tuple[int, int, str],

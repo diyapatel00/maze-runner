@@ -155,6 +155,15 @@ def move(runner: tuple[int, int, str],
         return (forward(turn(turn(runner, "Right"), "Right")), "B")
 
 
+def update_map(maze, x, y, value):
+    maze[2 * y + 1][2 * x + 1] = value
+    return maze
+
+
+def get_value(maze, x, y):
+    return maze[2 * y + 1][2 * x + 1]
+
+
 def explore(runner: tuple[int, int, str],
             maze: list[list[str]],
             goal: tuple[int, int] = None) -> list[tuple[int, int, str]]:
@@ -169,24 +178,38 @@ def explore(runner: tuple[int, int, str],
     :return: List of movements made from start of runner to reaching goal
     :rtype: list[tuple[int, int, str]]
     """
-    movements = []
-    found_goal = False
-
     if goal is None:
         goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
 
-    while not found_goal:
-        runner_position = (runner[0], runner[1])
-        movement = move(runner, maze)
-        movements.append((runner_position[0], runner_position[1], movement[1]))
-        runner = movement[0]
+    output_maze(maze)
+    start = runner[0], runner[1]
 
-        # Check if goal has been reached
-        if (get_x(runner), get_y(runner)) == goal:
+    movements = [start]
+    visited = {start}
+    position_queue = [start]
+
+    while len(position_queue) > 0:
+        current = position_queue.pop(0)
+        x, y = current
+
+        if current == goal:
+            print(visited)
             output_maze(maze)
-            found_goal = True
+            return movements
 
-    return movements
+        for i, (nx, ny) in enumerate([(x - 1, y), (x, y + 1), (x + 1, y)]):
+            if not sense_walls(runner, maze)[i] and (nx, ny) not in visited and nx >= 0 and ny >= 0:
+                print(nx, ny)
+                if get_value(maze, nx, ny) == '.' or (int(get_value(maze, nx, ny)) > int(get_value(maze, x, y) + 1)):
+                    update_map(maze, nx, ny, get_value(maze, x, y))
+                    visited.add((nx, ny))
+                    move, runner = movement(runner, (x, y), (nx, ny))
+                    movements.append(move)
+                    position_queue.append((nx, ny))
+            else:
+                continue
+
+    return -1
 
 
 def find_orientation(maze: list[list[str]],
@@ -219,3 +242,62 @@ def find_orientation(maze: list[list[str]],
             at_index = True
 
     return orientations
+
+
+def actions(runner: tuple[int, int, str], move_orient: str) -> str:
+    """Return movement action made to move in given direction.
+
+    :param runner: Current runner before move
+    :type runner: tuple[int, int, str]
+    :param move_orient: Direction to move in
+    :type move_orient: str
+    :return: Action taken to move in direction
+    :rtype: str
+    """
+    curr_orient = get_orientation(runner)
+
+    n_moves = {"N": "F", "E": "RF", "S": "B", "W": "LF"}
+    e_moves = {"N": "LF", "E": "F", "S": "RF", "W": "B"}
+    s_moves = {"N": "B", "E": "LF", "S": "F", "W": "RF"}
+    w_moves = {"N": "RF", "E": "B", "S": "LF", "W": "F"}
+
+    if curr_orient == "N":
+        return n_moves[move_orient]
+    elif curr_orient == "E":
+        return e_moves[move_orient]
+    elif curr_orient == "S":
+        return s_moves[move_orient]
+    else:  # curr_orient == "W"
+        return w_moves[move_orient]
+
+
+def movement(runner: tuple[int, int, str],
+             start: tuple[int, int],
+             end: tuple[int, int]) -> tuple[int, int, str]:
+    """Return runner and move made between two points.
+
+    'start' and 'end' are adjacent coordinates
+
+    :param runner: Current runner before movement
+    :type runner: tuple[int, int, str]
+    :param start: Coordinate to move from
+    :type start: tuple[int, int]
+    :param end: Coordinate to move to
+    :type end: tuple[int, int]
+    :return: Move made and updated runner
+    :rtype: tuple[int, int, str]
+    """
+    if end == (start[0], start[1] + 1):  # Moving North
+        move = (start[0], start[1], actions(runner, "N"))
+        runner = (end[0], end[1], "N")
+    elif end == (start[0] + 1, start[1]):  # Moving East
+        move = (start[0], start[1], actions(runner, "E"))
+        runner = (end[0], end[1], "E")
+    elif end == (start[0], start[1] - 1):  # Moving South
+        move = (start[0], start[1], actions(runner, "S"))
+        runner = (end[0], end[1], "S")
+    else:  # Moving West
+        move = (start[0], start[1], actions(runner, "W"))
+        runner = (end[0], end[1], "W")
+
+    return move, runner
