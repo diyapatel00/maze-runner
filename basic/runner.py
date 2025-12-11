@@ -197,6 +197,8 @@ def explore(runner: tuple[int, int, str],
     if goal is None:
         goal = (int((len(maze[0]) - 2) / 2), int((len(maze) - 2) / 2))
 
+    count = 1  # REMOVE BEFORE SUBMITTING
+
     while not found_goal:
         runner_position = (runner[0], runner[1])
         movement = move(runner, maze)
@@ -205,7 +207,11 @@ def explore(runner: tuple[int, int, str],
 
         # Check if goal has been reached
         if (get_x(runner), get_y(runner)) == goal:
+            output_maze(maze)
             found_goal = True
+
+        maze[2 * get_y(runner) + 1][2 * get_x(runner) + 1] = count
+        count += 1
 
     return movements
 
