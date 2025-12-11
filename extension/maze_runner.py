@@ -74,7 +74,7 @@ def maze_reader(maze_file: str) -> list[list[str]]:
 
 def validate_coordinates(arg: str, maze: list[list[str]]) -> bool:
     """Return if formatting of terminal inputs are correct.
-    
+
     :param arg: Input to be checked
     :type arg: str
     :return: True, False depending on formatting

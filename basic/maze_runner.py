@@ -114,6 +114,36 @@ def maze_reader(maze_file: str) -> list[list[str]]:
     return list(reversed(maze))
 
 
+def validate_coordinates(arg: str, maze: list[list[str]]) -> bool:
+    """Return if formatting of terminal inputs are correct.
+
+    :param arg: Input to be checked
+    :type arg: str
+    :return: True, False depending on formatting
+    :rtype: bool
+    """
+    strip_arg = arg.strip().split(",")
+
+    # Check to ensure 2 comma-separated parts
+    if len(strip_arg) != 2:
+        return False
+    else:
+        try:
+            # Ensure two integer values are present
+            int(strip_arg[0].strip())
+            int(strip_arg[1].strip())
+
+            # Ensure values within maze dimensions
+            len_x, len_y = get_dimensions(maze)
+            if (int(strip_arg[0].strip()) > len_x or
+                int(strip_arg[1].strip()) > len_y):
+                return False
+
+            return True
+        except ValueError:
+            return False
+
+
 def convert_to_tuple(values: str = None) -> tuple[int, int]:
     """Return tuple from given string.
 
@@ -141,36 +171,6 @@ def output_shortest_path_maze(path: list[tuple[int, int, str]],
     for move in path:
         maze[2 * move[1] + 1][2 * move[0] + 1] = "@"
     return output_maze(maze)
-
-
-def validate_coordinates(arg: str, maze: list[list[str]]) -> bool:
-    """Return if formatting of terminal inputs are correct.
-    
-    :param arg: Input to be checked
-    :type arg: str
-    :return: True, False depending on formatting
-    :rtype: bool
-    """
-    strip_arg = arg.strip().split(",")
-
-    # Check to ensure 2 comma-separated parts
-    if len(strip_arg) != 2:
-        return False
-    else:
-        try:
-            # Ensure two integer values are present
-            int(strip_arg[0].strip())
-            int(strip_arg[1].strip())
-
-            # Ensure values within maze dimensions
-            len_x, len_y = get_dimensions(maze)
-            if (int(strip_arg[0].strip()) > len_x or
-                int(strip_arg[1].strip()) > len_y):
-                return False
-
-            return True
-        except ValueError:
-            return False
 
 
 if __name__ == "__main__":
